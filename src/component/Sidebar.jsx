@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
- 
+
 const SideBarWrap = styled.div`
   z-index: 5;
   padding: 12px;
@@ -18,17 +18,17 @@ const SideBarWrap = styled.div`
     transition: 0.5s ease;
   }
 `;
- 
+
 const Menu = styled.li`
   margin: 30px 8px;
 `;
- 
+
 const ExitMenu = styled.span`
   position: absolute;
   bottom: 26px;
   font-size: 0.8rem;
 `;
- 
+
 function Sidebar({ isOpen, setIsOpen }) {
 
   const outside = useRef();
@@ -48,19 +48,24 @@ const handlerOutsie = (e) => {
   const toggleSide = () => {
     setIsOpen(false);
   };
- 
- 
+
+
   return (
   <SideBarWrap id='sidebar' ref={outside} className={isOpen ? 'open' : ''}>
     <h1 onClick={toggleSide}>X</h1>
     <ul>
       <Menu><Link to='./main'>메인</Link></Menu>
-      <Menu><Link to='./sub01'>sub01</Link></Menu>
-      <Menu><Link to='./sub02'>sub02</Link></Menu>
+      <Menu><Link to='./sub01'>카드사별조회</Link></Menu>
+      <Menu><Link to='./sub02'>단말기별조회</Link></Menu>
+      <Menu><Link to='./sub03'>현금영수증조회</Link></Menu>
+      <Menu><Link to='./sub04'>현금IC거래조회</Link></Menu>
+      <Menu><Link to='./sub05'>매출대비입금</Link></Menu>
+      <Menu><Link to='./sub06'>입금조회</Link></Menu>
+      <Menu><Link to='./logout'>로그아웃</Link></Menu>
     </ul>
 
   </SideBarWrap>
   );
 }
- 
+
 export default Sidebar;

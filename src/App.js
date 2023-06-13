@@ -12,6 +12,10 @@ import NotFound from './page/NotFound';
 import Otp from './page/Otp';
 import Sub01 from './page/Sub01';
 import Sub02 from './page/Sub02';
+import Sub03 from './page/Sub03';
+import Sub04 from './page/Sub04';
+import Sub05 from './page/Sub05';
+import Sub06 from './page/Sub06';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -39,7 +43,12 @@ function App() {
                   <Route path='/main' element={<Main/>}/>
                   <Route path='/sub01' element={<Sub01/>}/>
                   <Route path='/sub02' element={<Sub02/>}/>
+                  <Route path='/sub03' element={<Sub03/>}/>
+                  <Route path='/sub04' element={<Sub04/>}/>
+                  <Route path='/sub05' element={<Sub05/>}/>
+                  <Route path='/sub06' element={<Sub06/>}/>
                   <Route path="*" element={<NotFound />}/>
+                  <Route path="/logout" element={<Login onLogout={hnadleLogout}/>}/>
             </Routes>
             <Footer isLoggedIn={isLoggedIn}/>
         </BrowserRouter>

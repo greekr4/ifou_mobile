@@ -15,7 +15,7 @@ const Sub01 = () => {
     return(
         <>
             <TITLE>카드사별조회</TITLE>
-            <SearchBox/>
+            <SearchBox page = "sub01"/>
             <Gird/>
         </>
     )

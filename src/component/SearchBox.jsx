@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import Selecter from "./Search/Selecter";
 
-
-
 const SEARCH_BOX_DIV = styled.div`
     border-top: 2px solid #ADADAD;
     border-left: 2px solid #ADADAD;
@@ -91,18 +89,51 @@ const S_BTN_IMG = styled.i`
 
 
 
-const SearchBox = () => {
+
+
+
+const SearchBox = ({page}) => {
+
+    let content;
+    
+    // if(page === "sub01"){
+    //     content = [
+    //         <Selecter key="appdd" option="appdd" />,
+    //         <Selecter key="dep" option="dep" />,
+    //         <Selecter key="card" option="card" />
+    //       ];
+    // }else if(page === "sub02"){
+    //     content = [
+    //         <Selecter key="appdd" option="appdd" />,
+    //         <Selecter key="dep" option="dep" />,
+    //         <Selecter key="card" option="card" />
+    //       ];
+    // }
+
+
+
+    content =   (page === "sub01") ? content = [<Selecter option="appdd" />,<Selecter option="dep" />,<Selecter option="card" />] :
+                (page === "sub02") ? content = [<Selecter option="appdd" />,<Selecter option="dep" />,<Selecter option="tid" />] :
+                (page === "sub03") ? content = [<Selecter option="appdd" />,<Selecter option="dep" />,<Selecter option="tid" />] :
+                (page === "sub04") ? content = [<Selecter option="appdd" />,<Selecter option="dep" />,<Selecter option="tid" />] :
+                (page === "sub05") ? content = [<Selecter option="appdd" />,<Selecter option="tid" />] :
+                (page === "sub06") ? content = [<Selecter option="expdd" />,<Selecter option="dep" />,<Selecter option="tid" />] : "";
+
+
+
+
+
     return(
         <>
         <SEARCH_BOX_DIV>
         <SEARCH_BOX_TABLE>
+        
 
 
-
-
-        <Selecter option="appdd"/>
+        {content}
+        {/* <Selecter option="appdd"/>
         <Selecter option="dep"/>
-        <Selecter option="card"/>
+        <Selecter option="card"/> */}
         
             
 

@@ -30,12 +30,19 @@ position: relative;
 `;
 
 
+// const Menu_btn = styled.img`
+// position: absolute;
+// top: 55px;
+// right: 0;
+// width: 80px;
+// `;
+
 const Menu_btn = styled.img`
 position: absolute;
 top: 55px;
 right: 0;
-width: 80px;
-`
+width: 200px;
+`;
 
 
 
@@ -52,13 +59,13 @@ console.log(isLoggedIn);
         <Logo_wrap>
         
         {isLoggedIn === true ?
-        <Link to='/main'><Logo src="/Resource/Images/Logo/logo_main.png"/></Link> :
-        <Link to='/'><Logo src="/Resource/Images/Logo/logo_main.png"/> </Link>
+        <Link to='/main'><Logo src="/Resource/Images/Logo/logo_main.jpg"/></Link> :
+        <Link to='/'><Logo src="/Resource/Images/Logo/logo_main.jpg"/> </Link>
         }
         </Logo_wrap>
 
         {isLoggedIn === true ?
-        <Menu_btn src="/Resource/Images/Icon/menu.png" onClick={toggleSide}/> :
+        <Menu_btn src="/Resource/Images/Icon/menu.gif" onClick={toggleSide}/> :
         <></>
         }
         

@@ -5,16 +5,18 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
+
+
 const Gird = () => {
     
     const numberCellFormatter = (params) => {
         return Math.floor(params.value)
-          .toString()
-          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      };
+        .toString()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    };
 
 
-      
+
     const [columnDefs] = useState([
         { field: 'appdd' ,headerName: '승인일자',},
         { field: 'dep' ,headerName: '사업부'},
@@ -73,11 +75,11 @@ const Gird = () => {
 
     const onFirstDataRendered = useCallback((params) => {
         gridRef.current.api.sizeColumnsToFit();
-      }, []);
+    }, []);
     
     const GRID_WRAP = styled.div`
-      width: 95%;
-      margin: 10px auto;
+    width: 95%;
+    margin: 10px auto;
     `;
 
 

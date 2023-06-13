@@ -9,16 +9,16 @@ const TITLE = styled.h2`
 padding-left: 10px;
 `;
 
-const Sub02 = () => {
+const Sub04 = () => {
  
     
     return(
         <>
-            <TITLE>단말기별조회</TITLE>
-            <SearchBox page = "sub02"/>
+            <TITLE>현금IC거래조회</TITLE>
+            <SearchBox page = "sub04"/>
             <Gird/>
         </>
     )
 }
 
-export default Sub02;
+export default Sub04;

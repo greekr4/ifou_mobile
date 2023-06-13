@@ -51,7 +51,9 @@ font-weight: 600;
 border: none;
 `;
 
-function LoginTest() {
+function LoginTest({onLogout}) {
+
+    console.log(onLogout);
     const [inputId, setInputId] = useState('nifou2');
     const [inputPw, setInputPw] = useState('1');
 
