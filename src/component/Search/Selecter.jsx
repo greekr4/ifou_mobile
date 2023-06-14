@@ -168,8 +168,8 @@ const Selecter = ({ option }) => {
               <S_DD_INPUT
                 value={sappdd}
                 onChange={handleInputSappdd}
-              ></S_DD_INPUT>{" "}
-              ~{" "}
+              ></S_DD_INPUT>
+              ~
               <S_DD_INPUT
                 value={eappdd}
                 onChange={handleInputEappdd}
@@ -207,8 +207,8 @@ const Selecter = ({ option }) => {
               <S_DD_INPUT
                 value={sexpdd}
                 onChange={handleInputSexpdd}
-              ></S_DD_INPUT>{" "}
-              ~{" "}
+              ></S_DD_INPUT>
+              ~
               <S_DD_INPUT
                 value={eexpdd}
                 onChange={handleInputEexpdd}
