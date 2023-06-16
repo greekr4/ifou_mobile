@@ -4,7 +4,7 @@ import styled from "styled-components";
 const DAYBOX = styled.div`
   margin: 0 auto;
   width: 80%;
-  height: 550px;
+  height: 100%;
   background-color: #fff;
   border: 1px solid #c1c1c1;
   padding: 20px;
@@ -15,7 +15,7 @@ const DAYBOX = styled.div`
 const TITLE_WRAP = styled.div`
   width: 100%;
   margin-bottom: 20px;
-  font-size: 2rem;
+  font-size: 6.5vw;
   font-weight: 500;
 `;
 
@@ -98,7 +98,7 @@ const ITEM_BOX = styled.div`
     width: 70%;
     margin: 0 auto;
     position: relative;
-    top: 7px;
+    top: 0px;
   }
 
   &.border-none::after {
@@ -121,33 +121,46 @@ const ITEM_BOX = styled.div`
 
 const CHANGE_BTN = styled.div`
   margin: 0 10px;
-  font-size: 32px;
+  background-position: center;
+  width: 35px;
+  height: 44px;
+
+  &.prev {
+    background: url("/Resource/Images/Icon/prev.png") no-repeat;
+  }
+  &.next {
+    background: url("/Resource/Images/Icon/next.png") no-repeat;
+  }
 `;
 
 const MM_DD = styled.span`
-  font-size: 45px;
+  font-size: 10vw;
   font-weight: 600;
 `;
 
 const MM_DD_TEXT = styled.span`
   height: 20%;
-  font-size: 26px;
+  font-size: 6vw;
   font-weight: 200;
 `;
 
 const DAY_TEXT = styled.span`
-  font-size: 36px;
+  font-size: 9vw;
 `;
 
 const ITEM_TEXT = styled.div`
   width: 100%;
-  font-size: 24px;
+  font-size: 5.5vw;
+  padding-top: 0.33em;
+  padding-bottom: 0.33em;
 `;
 
 const ITEM_AMT = styled.div`
   width: 100%;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 5vw;
+  padding-top: 0.33em;
+  padding-bottom: 0.33em;
 `;
 
 const TITLE_IMG = styled.img`
@@ -155,6 +168,10 @@ const TITLE_IMG = styled.img`
 `;
 const MM_DD_SUB = styled.span`
   font-weight: 200;
+`;
+
+const TEXT_SPAN = styled.span`
+  padding: 20px;
 `;
 
 const DashBoard = ({ title, cc, ic, sum, test }) => {
@@ -167,12 +184,14 @@ const DashBoard = ({ title, cc, ic, sum, test }) => {
         </TITLE_WRAP>
         <DASHBOX>
           <TITLE_BOX>
-            <CHANGE_BTN>←</CHANGE_BTN>
-            <MM_DD>04</MM_DD>
-            <MM_DD_TEXT>월</MM_DD_TEXT>
-            <MM_DD>17</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
-            <DAY_TEXT>(월)</DAY_TEXT>
-            <CHANGE_BTN>→</CHANGE_BTN>
+            <CHANGE_BTN className="prev" />
+            <TEXT_SPAN>
+              <MM_DD>04</MM_DD>
+              <MM_DD_TEXT>월</MM_DD_TEXT>
+              <MM_DD>17</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
+              <DAY_TEXT>(월)</DAY_TEXT>
+            </TEXT_SPAN>
+            <CHANGE_BTN className="next" />
           </TITLE_BOX>
           <ITEM_BOX>
             <ITEM_TEXT>신용(1,123건)</ITEM_TEXT>
@@ -202,12 +221,14 @@ const DashBoard = ({ title, cc, ic, sum, test }) => {
         </TITLE_WRAP>
         <DASHBOX>
           <TITLE_BOX>
-            <CHANGE_BTN>←</CHANGE_BTN>
-            <MM_DD>04</MM_DD>
-            <MM_DD_TEXT>월</MM_DD_TEXT>
-            <MM_DD>17</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
-            <DAY_TEXT>(월)</DAY_TEXT>
-            <CHANGE_BTN>→</CHANGE_BTN>
+            <CHANGE_BTN className="prev" />
+            <TEXT_SPAN>
+              <MM_DD>04</MM_DD>
+              <MM_DD_TEXT>월</MM_DD_TEXT>
+              <MM_DD>17</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
+              <DAY_TEXT>(월)</DAY_TEXT>
+            </TEXT_SPAN>
+            <CHANGE_BTN className="next" />
           </TITLE_BOX>
           <ITEM_BOX>
             <ITEM_TEXT>매출</ITEM_TEXT>
@@ -233,11 +254,13 @@ const DashBoard = ({ title, cc, ic, sum, test }) => {
         </TITLE_WRAP>
         <DASHBOX>
           <TITLE_BOX>
-            <CHANGE_BTN>←</CHANGE_BTN>
-            <MM_DD>
-              04<MM_DD_SUB>월</MM_DD_SUB>
-            </MM_DD>
-            <CHANGE_BTN>→</CHANGE_BTN>
+            <CHANGE_BTN className="prev" />
+            <TEXT_SPAN>
+              <MM_DD>
+                04<MM_DD_SUB>월</MM_DD_SUB>
+              </MM_DD>
+            </TEXT_SPAN>
+            <CHANGE_BTN className="next" />
           </TITLE_BOX>
           <ITEM_BOX>
             <ITEM_TEXT>신용(1,123건)</ITEM_TEXT>

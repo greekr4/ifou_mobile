@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Gird from "../component/Grid";
 import SearchBox from "../component/SearchBox";
 
 const TITLE = styled.h2`
@@ -12,7 +11,6 @@ const Sub06 = () => {
     <>
       <TITLE>입금조회</TITLE>
       <SearchBox page="sub06" />
-      <Gird />
     </>
   );
 };

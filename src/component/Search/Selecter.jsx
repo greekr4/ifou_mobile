@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { search_option } from "../../Redux";
 
 const S_TR = styled.tr`
   border-bottom: 1px solid #adadad;
@@ -67,14 +69,30 @@ const getCurrentDate = () => {
   return `${year}.${month}.${day}`;
 };
 
-const Selecter = ({ option }) => {
-  const [sappdd, setSappdd] = useState(getCurrentDate());
-  const [eappdd, setEappdd] = useState(getCurrentDate());
-  const [sexpdd, setSexpdd] = useState(getCurrentDate());
-  const [eexpdd, setEexpdd] = useState(getCurrentDate());
+const Selecter = ({
+  option,
+  handleDPOpen,
+  sappdd,
+  setSappdd,
+  eappdd,
+  setEappdd,
+  sexpdd,
+  setSexpdd,
+  eexpdd,
+  setEexpdd,
+  card,
+  setCard,
+  tid,
+  setTid,
+  dep,
+  setDep,
+}) => {
   const [tidlist, setTidlist] = useState([]);
   const [cardlist, setCardlist] = useState([]);
   const [deplist, setDeplist] = useState([]);
+
+  const dispatch = useDispatch();
+  const ReduceAuth = useSelector((state) => state);
 
   const handleInputSappdd = (e) => {
     setSappdd(e.target.value);
@@ -136,7 +154,33 @@ const Selecter = ({ option }) => {
         })
         .catch();
     }
+    test();
   }, []);
+
+  const test = () => {
+    const data = new URLSearchParams({
+      sappdd: sappdd,
+      eappdd: eappdd,
+      sexpdd: sexpdd,
+      eexpdd: eexpdd,
+      card: card,
+    }).toString();
+    dispatch({
+      type: search_option,
+      data: data,
+    });
+  };
+  const handleCard = (e) => {
+    setCard(e.target.value);
+  };
+
+  const handleTid = (e) => {
+    setTid(e.target.value);
+  };
+
+  const handleDep = (e) => {
+    setDep(e.target.value);
+  };
 
   switch (option) {
     case "card":
@@ -145,12 +189,12 @@ const Selecter = ({ option }) => {
           <S_TH>카드사</S_TH>
           <S_TD>
             <S_DIV>
-              <S_SELECT>
-                <option key="1" value="1">
+              <S_SELECT onChange={handleCard}>
+                <option key="" value="">
                   전체카드
                 </option>
                 {cardlist.map((item) => (
-                  <option key={item.pur_cd} value={item.pur_cd}>
+                  <option key={item.pur_koces} value={item.pur_koces}>
                     {item.pur_nm}
                   </option>
                 ))}
@@ -167,12 +211,18 @@ const Selecter = ({ option }) => {
             <S_DIV>
               <S_DD_INPUT
                 value={sappdd}
+                id="sappdd"
+                onClick={() => handleDPOpen("sappdd")}
                 onChange={handleInputSappdd}
+                readOnly
               ></S_DD_INPUT>
               ~
               <S_DD_INPUT
                 value={eappdd}
+                id="eappdd"
+                onClick={() => handleDPOpen("eappdd")}
                 onChange={handleInputEappdd}
+                readOnly
               ></S_DD_INPUT>
             </S_DIV>
           </S_TD>
@@ -184,8 +234,8 @@ const Selecter = ({ option }) => {
           <S_TH>사업부</S_TH>
           <S_TD>
             <S_DIV>
-              <S_SELECT>
-                <option key="1" value="1">
+              <S_SELECT onChange={handleDep}>
+                <option key="" value="">
                   전체
                 </option>
                 {deplist.map((item) => (
@@ -206,12 +256,18 @@ const Selecter = ({ option }) => {
             <S_DIV>
               <S_DD_INPUT
                 value={sexpdd}
+                id="sexpdd"
+                onClick={() => handleDPOpen("sexpdd")}
                 onChange={handleInputSexpdd}
+                readOnly
               ></S_DD_INPUT>
               ~
               <S_DD_INPUT
                 value={eexpdd}
+                id="eexpdd"
+                onClick={() => handleDPOpen("eexpdd")}
                 onChange={handleInputEexpdd}
+                readOnly
               ></S_DD_INPUT>
             </S_DIV>
           </S_TD>
@@ -223,7 +279,7 @@ const Selecter = ({ option }) => {
           <S_TH>단말기</S_TH>
           <S_TD>
             <S_DIV>
-              <S_SELECT>
+              <S_SELECT onChange={handleTid}>
                 <option key="1" value="1">
                   단말기1
                 </option>

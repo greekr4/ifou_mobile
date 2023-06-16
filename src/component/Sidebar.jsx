@@ -84,7 +84,7 @@ function Sidebar({ isOpen, setIsOpen }) {
           <Link to="./sub04">현금IC거래조회</Link>
         </Menu>
         <Menu>
-          <Link to="./sub05">매출대비입금</Link>
+          <Link to="./sub05">매출대비입금조회</Link>
         </Menu>
         <Menu>
           <Link to="./sub06">입금조회</Link>

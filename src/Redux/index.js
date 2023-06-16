@@ -3,11 +3,13 @@ const initState = {
   id: "",
   uAuth: "",
   LoggedIn: false,
+  search_option: "",
 };
 
 //액션
 export const uAuth = "uAuth";
 export const LoggedIn = "LoggedIn";
+export const search_option = "search_option";
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
@@ -21,7 +23,11 @@ const reducer = (state = initState, action) => {
         ...state,
         LoggedIn: action.data,
       };
-
+    case search_option:
+      return {
+        ...state,
+        search_option: action.data,
+      };
     //기본값
     default:
       return state;

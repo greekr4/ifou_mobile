@@ -32,8 +32,6 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  const dispatch = useDispatch();
-
   const onClickLogin = () => {
     dispatch({
       type: LoggedIn,
@@ -55,7 +53,7 @@ function App() {
       data: "X",
     });
   };
-
+  const dispatch = useDispatch();
   const ReduceAuth = useSelector((state) => state);
   console.log("> uAuth2.LoggedIn : " + ReduceAuth.LoggedIn);
   console.log("> uAuth2.uAuth : " + ReduceAuth.uAuth);
