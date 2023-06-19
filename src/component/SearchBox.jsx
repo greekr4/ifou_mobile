@@ -325,7 +325,7 @@ const SearchBox = ({ page }) => {
             eappdd={eappdd}
             setEappdd={setEappdd}
           />,
-          <Selecter option="card" card={card} setCard={setCard} />,
+          <Selecter option="dep" dep={dep} setDep={setDep} />,
         ])
       : page === "sub06"
       ? (content = [
