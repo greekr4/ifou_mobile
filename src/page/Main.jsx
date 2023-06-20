@@ -1,22 +1,23 @@
-import React, { useEffect } from "react";
-import DashBoard from "../component/DashBoard";
+import React, { useEffect } from 'react';
+import DashBoard from '../component/DashBoard';
+import { useState } from 'react';
 
 const Main = () => {
   useEffect(() => {
     const preventGoBack = () => {
-      window.history.pushState(null, "", window.location.href);
+      window.history.pushState(null, '', window.location.href);
     };
-    window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", preventGoBack);
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
 
-    return () => window.removeEventListener("popstate", preventGoBack);
+    return () => window.removeEventListener('popstate', preventGoBack);
   });
 
   return (
     <>
-      <DashBoard title="01" appdd="20230605" test="06월 05일 (월)" />
-      <DashBoard title="02" test="06월 05일 (월)" />
-      <DashBoard title="03" test="2023년 06월" />
+      <DashBoard title="01" />
+      <DashBoard title="02" />
+      <DashBoard title="03" />
     </>
   );
 };

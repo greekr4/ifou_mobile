@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import SearchBox from "../component/SearchBox";
+import React from 'react';
+import styled from 'styled-components';
+import SearchBox from '../component/SearchBox';
 
 const TITLE = styled.h2`
   padding-left: 10px;

@@ -1,5 +1,5 @@
-import React from "react";
-import OtpComponent from "../component/OtpComponent";
+import React from 'react';
+import OtpComponent from '../component/OtpComponent';
 
 const Otp = ({ isLoggedIn, onLogin }) => {
   return (

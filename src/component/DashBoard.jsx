@@ -1,5 +1,7 @@
-import React from "react";
-import styled from "styled-components";
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
 
 const DAYBOX = styled.div`
   margin: 0 auto;
@@ -92,7 +94,7 @@ const TITLE_BOX = styled.div`
 
 const ITEM_BOX = styled.div`
   &::after {
-    content: "";
+    content: '';
     display: block;
     border-bottom: 1px solid rgb(212, 212, 213);
     width: 70%;
@@ -126,26 +128,36 @@ const CHANGE_BTN = styled.div`
   height: 44px;
 
   &.prev {
-    background: url("/Resource/Images/Icon/prev.png") no-repeat;
+    background: url('/Resource/Images/Icon/prev.png') no-repeat;
   }
   &.next {
-    background: url("/Resource/Images/Icon/next.png") no-repeat;
+    background: url('/Resource/Images/Icon/next.png') no-repeat;
   }
 `;
 
+const TEXT_SPAN = styled.span`
+  padding: 20px;
+  display: flex;
+  align-items: flex-end;
+`;
+
 const MM_DD = styled.span`
-  font-size: 10vw;
+  font-size: 8vw;
   font-weight: 600;
 `;
 
 const MM_DD_TEXT = styled.span`
   height: 20%;
-  font-size: 6vw;
+  font-size: 5vw;
   font-weight: 200;
+
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
 `;
 
 const DAY_TEXT = styled.span`
-  font-size: 9vw;
+  font-size: 7vw;
 `;
 
 const ITEM_TEXT = styled.div`
@@ -170,12 +182,97 @@ const MM_DD_SUB = styled.span`
   font-weight: 200;
 `;
 
-const TEXT_SPAN = styled.span`
-  padding: 20px;
-`;
+const DashBoard = ({ title }) => {
+  const today = new Date();
+  const today_appdd =
+    today.getFullYear() +
+    String(today.getMonth() + 1).padStart(2, '0') +
+    String(today.getDate()).padStart(2, '0');
+  const [appdd, setAppdd] = useState(today_appdd);
 
-const DashBoard = ({ title, cc, ic, sum, test }) => {
-  if (title === "01") {
+  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  const year = String(appdd).slice(0, 4);
+  const month = String(appdd).slice(4, 6);
+  const date = String(appdd).slice(6, 8);
+  let fulldate = new Date(year, parseInt(month - 1), date);
+  const week = daysOfWeek[fulldate.getDay()];
+
+  const [ccCnt, setCcCnt] = useState(0);
+  const [ccAmt, setCcAmt] = useState(0);
+  const [cbCnt, setCbCnt] = useState(0);
+  const [cbAmt, setCbAmt] = useState(0);
+  const [icCnt, setIcCnt] = useState(0);
+  const [icAmt, setIcAmt] = useState(0);
+  const [sumCnt, setSumCnt] = useState(0);
+  const [sumAmt, setSumAmt] = useState(0);
+
+  if (title === '01') {
+    axios
+      .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
+        params: {
+          orgcd: 'OR0016',
+          appdd: appdd,
+        },
+      })
+      .then(res => {
+        console.log(res.data);
+        setCcCnt(
+          res.data.CC_CNT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+        setCcAmt(
+          res.data.CC_AMT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+        setCbCnt(
+          res.data.CB_CNT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+        setCbAmt(
+          res.data.CB_AMT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+        setIcCnt(
+          res.data.IC_CNT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+        setIcAmt(
+          res.data.IC_AMT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+        setSumCnt(
+          res.data.SUM_CNT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+        setSumAmt(
+          res.data.SUM_AMT.toLocaleString(undefined, {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+          }),
+        );
+      });
+
+    const onclickPrev = () => {
+      setAppdd('20230301');
+    };
+    const onclickNext = () => {
+      setAppdd('20230302');
+    };
+
     return (
       <DAYBOX>
         <TITLE_WRAP>
@@ -184,35 +281,35 @@ const DashBoard = ({ title, cc, ic, sum, test }) => {
         </TITLE_WRAP>
         <DASHBOX>
           <TITLE_BOX>
-            <CHANGE_BTN className="prev" />
+            <CHANGE_BTN className="prev" onClick={onclickPrev} />
             <TEXT_SPAN>
-              <MM_DD>04</MM_DD>
+              <MM_DD>{month}</MM_DD>
               <MM_DD_TEXT>월</MM_DD_TEXT>
-              <MM_DD>17</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
-              <DAY_TEXT>(월)</DAY_TEXT>
+              <MM_DD>{date}</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
+              <DAY_TEXT>({week})</DAY_TEXT>
             </TEXT_SPAN>
-            <CHANGE_BTN className="next" />
+            <CHANGE_BTN className="next" onClick={onclickNext} />
           </TITLE_BOX>
           <ITEM_BOX>
-            <ITEM_TEXT>신용(1,123건)</ITEM_TEXT>
-            <ITEM_AMT>1,100,000원</ITEM_AMT>
+            <ITEM_TEXT>신용 ({ccCnt}건)</ITEM_TEXT>
+            <ITEM_AMT>{ccAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX>
-            <ITEM_TEXT>현금(10건)</ITEM_TEXT>
-            <ITEM_AMT>10,000원</ITEM_AMT>
+            <ITEM_TEXT>현금 ({cbCnt}건)</ITEM_TEXT>
+            <ITEM_AMT>{cbAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="border-none">
-            <ITEM_TEXT>현금IC(1건)</ITEM_TEXT>
-            <ITEM_AMT>5,000원</ITEM_AMT>
+            <ITEM_TEXT>현금IC ({icCnt}건)</ITEM_TEXT>
+            <ITEM_AMT>{icAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="sum-item">
-            <ITEM_TEXT>합계(1,134건)</ITEM_TEXT>
-            <ITEM_AMT>1,250,000원</ITEM_AMT>
+            <ITEM_TEXT>합계 ({sumCnt}건)</ITEM_TEXT>
+            <ITEM_AMT>{sumAmt}원</ITEM_AMT>
           </ITEM_BOX>
         </DASHBOX>
       </DAYBOX>
     );
-  } else if (title === "02") {
+  } else if (title === '02') {
     return (
       <DAYBOX>
         <TITLE_WRAP>
@@ -245,7 +342,7 @@ const DashBoard = ({ title, cc, ic, sum, test }) => {
         </DASHBOX>
       </DAYBOX>
     );
-  } else if (title === "03") {
+  } else if (title === '03') {
     return (
       <DAYBOX>
         <TITLE_WRAP>
