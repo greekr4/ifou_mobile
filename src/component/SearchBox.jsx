@@ -1,9 +1,12 @@
-import axios from "axios";
-import React, { useState } from "react";
-import DatePicker from "react-mobile-datepicker";
-import styled from "styled-components";
-import GridComponent from "./GridComponent";
-import Selecter from "./Search/Selecter";
+import axios from 'axios';
+import React, { useState } from 'react';
+import DatePicker from 'react-mobile-datepicker';
+import DatePicker2 from 'react-mobile-datepicker';
+import styled from 'styled-components';
+import GridComponent from './GridComponent';
+import Selecter from './Search/Selecter';
+import { useEffect } from 'react';
+import { useRef } from 'react';
 
 const SEARCH_BOX_DIV = styled.div`
   border-top: 2px solid #adadad;
@@ -98,7 +101,6 @@ const SearchBox = ({ page }) => {
     let month = date.getMonth() + 1;
     let day = date.getDate();
 
-    // 한 자리 숫자인 경우 앞에 0을 추가하여 두 자리로 만듦
     if (month < 10) {
       month = `0${month}`;
     }
@@ -108,17 +110,19 @@ const SearchBox = ({ page }) => {
     return `${year}.${month}.${day}`;
   };
 
-  const formatDate = (date) => {
+  const formatDate = date => {
     const year = date.getFullYear().toString().substring(2, 6);
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
     return `${year}.${month}.${day}`;
   };
 
   let content;
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate2, setSelectedDate2] = useState(new Date());
   const [activeInput, setActiveInput] = useState(null);
   const [sappdd, setSappdd] = useState(getCurrentDate());
   const [eappdd, setEappdd] = useState(getCurrentDate());
@@ -128,33 +132,62 @@ const SearchBox = ({ page }) => {
   const [card, setCard] = useState();
   const [dep, setDep] = useState();
 
-  const handleDateChange = (date) => {
+  const handleDateChange = date => {
     setSelectedDate(date);
     setIsOpen(false);
 
     //분기처리해야함
-    if (activeInput === "sappdd") {
+    if (activeInput === 'sappdd') {
       setSappdd(formatDate(date));
-    } else if (activeInput === "eappdd") {
+    } else if (activeInput === 'eappdd') {
       setEappdd(formatDate(date));
-    } else if (activeInput === "sexpdd") {
+    } else if (activeInput === 'sexpdd') {
       setSexpdd(formatDate(date));
-    } else if (activeInput === "eexpdd") {
+    } else if (activeInput === 'eexpdd') {
       setEexpdd(formatDate(date));
     }
-    document.body.classList.remove("datepicker-open"); // body에 클래스를 추가하여 스크롤을 막습니다.
+    document.body.classList.remove('datepicker-open');
   };
 
-  const handleDPOpen = (inputId) => {
+  const handleDateChange2 = date => {
+    setSelectedDate2(date);
+    setIsOpen2(false);
+
+    //분기처리해야함
+    if (activeInput === 'sappdd') {
+      setSappdd(formatDate(date));
+    } else if (activeInput === 'eappdd') {
+      setEappdd(formatDate(date));
+    } else if (activeInput === 'sexpdd') {
+      setSexpdd(formatDate(date));
+    } else if (activeInput === 'eexpdd') {
+      setEexpdd(formatDate(date));
+    }
+    document.body.classList.remove('datepicker-open');
+  };
+
+  const handleDPOpen = inputId => {
     window.scrollTo(0, 0);
     setIsOpen(true);
     setActiveInput(inputId);
-    document.body.classList.add("datepicker-open"); // body에 클래스를 추가하여 스크롤을 막습니다.
+    document.body.classList.add('datepicker-open');
   };
 
   const handleDPClose = () => {
     setIsOpen(false);
-    document.body.classList.remove("datepicker-open"); // body에 클래스를 추가하여 스크롤을 막습니다.
+    document.body.classList.remove('datepicker-open');
+  };
+
+  const handleDPOpen2 = inputId => {
+    window.scrollTo(0, 0);
+    setIsOpen2(true);
+    setActiveInput(inputId);
+    document.body.classList.add('datepicker-open');
+  };
+
+  const handleDPClose2 = () => {
+    setIsOpen2(false);
+    document.body.classList.remove('datepicker-open');
   };
 
   const testbtn = () => {
@@ -177,97 +210,176 @@ const SearchBox = ({ page }) => {
     console.log(qrystring);
 
     axios
-      .post("http://nxm.ifou.co.kr:28080/sub01", null, {
+      .post('http://nxm.ifou.co.kr:28080/sub01', null, {
         params: {
           sappdd: p_sappdd,
           eappdd: p_eappdd,
-          orgcd: "OR0016",
+          orgcd: 'OR0016',
           depcd: dep,
           acqcd: card,
         },
       })
-      .then((res) => {
+      .then(res => {
         console.log(res.data);
         setRowData(res.data);
       });
   };
 
   /* 그리드 */
-  const numberCellFormatter = (params) => {
+  const numberCellFormatter = params => {
     return Math.floor(params.value)
       .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   };
 
-  const [columnDefs] = useState([
-    { field: "appdd", headerName: "승인일자" },
-    { field: "dep", headerName: "사업부" },
-    { field: "card", headerName: "카드사" },
-    {
-      field: "cnt",
-      headerName: "합계건수",
-      cellClass: "number",
-      valueFormatter: numberCellFormatter,
-    },
-    {
-      field: "amt",
-      headerName: "합계금액",
-      cellClass: "number",
-      valueFormatter: numberCellFormatter,
-    },
-  ]);
+  const gridOptions = {
+    suppressAggFuncInHeader: true,
+  };
 
-  const [rowData, setRowData] = useState([
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-    { appdd: "23.06.04", dep: "사업부", card: "신한", cnt: "1", amt: 10000 },
-  ]);
+  const defaultColDef = {
+    sortable: true,
+    resizable: true,
+  };
+
+  //setRowData(addSubtotalRows());
+  //addSubtotalRows();
+  //const updatedRowData = addSubtotalRows();
+
+  useEffect(() => {
+    if (page === 'sub01') {
+      setColmnDefs([
+        { field: 'appdd', headerName: '승인일자' },
+        { field: 'dep', headerName: '사업부' },
+        { field: 'card', headerName: '카드사' },
+        {
+          field: 'cnt',
+          headerName: '합계건수',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+        {
+          field: 'amt',
+          headerName: '합계금액',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+      ]);
+    } else if (page === 'sub02') {
+      setColmnDefs([
+        {
+          filed: 'appdd',
+          headerName: '승인일자',
+        },
+        { field: 'dep', headerName: '사업부' },
+        { field: 'tidnm', headerName: '단말기' },
+        {
+          field: 'cnt',
+          headerName: '합계건수',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+        {
+          field: 'amt',
+          headerName: '합계금액',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+      ]);
+    } else if (page === 'sub03') {
+      setColmnDefs([
+        {
+          filed: 'appdd',
+          headerName: '승인일자',
+        },
+        { field: 'dep', headerName: '사업부' },
+        { field: 'tidnm', headerName: '단말기' },
+        {
+          field: 'cnt',
+          headerName: '합계건수',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+        {
+          field: 'amt',
+          headerName: '합계금액',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+      ]);
+    } else if (page === 'sub04') {
+      setColmnDefs([
+        {
+          filed: 'appdd',
+          headerName: '승인일자',
+        },
+        { field: 'dep', headerName: '사업부' },
+        { field: 'tidnm', headerName: '단말기' },
+        {
+          field: 'cnt',
+          headerName: '합계건수',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+        {
+          field: 'amt',
+          headerName: '합계금액',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+      ]);
+    } else if (page === 'sub05') {
+      setColmnDefs([
+        {
+          filed: 'appdd',
+          headerName: '입금일자',
+        },
+        { field: 'dep', headerName: '사업부' },
+
+        {
+          field: 'totsales',
+          headerName: '매출금액',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+        {
+          field: 'totreceivable',
+          headerName: '미수금액',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+      ]);
+    } else if (page === 'sub06') {
+      setColmnDefs([
+        {
+          filed: 'expdd',
+          headerName: '입금일자',
+        },
+        { field: 'dep', headerName: '사업부' },
+        { field: 'card', headerName: '카드사' },
+
+        {
+          field: 'amt',
+          headerName: '입금액합계',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+      ]);
+    }
+  }, []);
+
+  const [columnDefs, setColmnDefs] = useState([]);
+
+  const [rowData, setRowData] = useState([{ amt: 100, cnt: 100 }]);
 
   /* 그리드 끝 */
 
   content =
-    page === "sub01"
+    page === 'sub01'
       ? (content = [
           <Selecter
             option="appdd"
             handleDPOpen={handleDPOpen}
+            handleDPOpen2={handleDPOpen2}
             sappdd={sappdd}
             setSappdd={setSappdd}
             eappdd={eappdd}
@@ -276,11 +388,12 @@ const SearchBox = ({ page }) => {
           <Selecter option="dep" dep={dep} setDep={setDep} />,
           <Selecter option="card" card={card} setCard={setCard} />,
         ])
-      : page === "sub02"
+      : page === 'sub02'
       ? (content = [
           <Selecter
             option="appdd"
             handleDPOpen={handleDPOpen}
+            handleDPOpen2={handleDPOpen2}
             sappdd={sappdd}
             setSappdd={setSappdd}
             eappdd={eappdd}
@@ -289,11 +402,12 @@ const SearchBox = ({ page }) => {
           <Selecter option="dep" dep={dep} setDep={setDep} />,
           <Selecter option="tid" tid={tid} setTid={setTid} />,
         ])
-      : page === "sub03"
+      : page === 'sub03'
       ? (content = [
           <Selecter
             option="appdd"
             handleDPOpen={handleDPOpen}
+            handleDPOpen2={handleDPOpen2}
             sappdd={sappdd}
             setSappdd={setSappdd}
             eappdd={eappdd}
@@ -302,11 +416,12 @@ const SearchBox = ({ page }) => {
           <Selecter option="dep" dep={dep} setDep={setDep} />,
           <Selecter option="card" card={card} setCard={setCard} />,
         ])
-      : page === "sub04"
+      : page === 'sub04'
       ? (content = [
           <Selecter
             option="appdd"
             handleDPOpen={handleDPOpen}
+            handleDPOpen2={handleDPOpen2}
             sappdd={sappdd}
             setSappdd={setSappdd}
             eappdd={eappdd}
@@ -315,11 +430,12 @@ const SearchBox = ({ page }) => {
           <Selecter option="dep" dep={dep} setDep={setDep} />,
           <Selecter option="card" card={card} setCard={setCard} />,
         ])
-      : page === "sub05"
+      : page === 'sub05'
       ? (content = [
           <Selecter
             option="appdd"
             handleDPOpen={handleDPOpen}
+            handleDPOpen2={handleDPOpen2}
             sappdd={sappdd}
             setSappdd={setSappdd}
             eappdd={eappdd}
@@ -327,11 +443,12 @@ const SearchBox = ({ page }) => {
           />,
           <Selecter option="dep" dep={dep} setDep={setDep} />,
         ])
-      : page === "sub06"
+      : page === 'sub06'
       ? (content = [
           <Selecter
             option="expdd"
             handleDPOpen={handleDPOpen}
+            handleDPOpen2={handleDPOpen2}
             sexpdd={sexpdd}
             setSexpdd={setSexpdd}
             eexpdd={eexpdd}
@@ -340,15 +457,25 @@ const SearchBox = ({ page }) => {
           <Selecter option="dep" dep={dep} setDep={setDep} />,
           <Selecter option="card" card={card} setCard={setCard} />,
         ])
-      : "";
+      : '';
 
   return (
     <>
       <DatePicker
+        //value={new Date(2022, 2, 2)}
         value={selectedDate}
         isOpen={isOpen}
         onSelect={handleDateChange}
         onCancel={handleDPClose}
+        confirmText="선택"
+        cancelText="취소"
+      />
+      <DatePicker2
+        //value={new Date(2022, 3, 2)}
+        value={selectedDate2}
+        isOpen={isOpen2}
+        onSelect={handleDateChange2}
+        onCancel={handleDPClose2}
         confirmText="선택"
         cancelText="취소"
       />
@@ -367,6 +494,8 @@ const SearchBox = ({ page }) => {
         columnDefs={columnDefs}
         rowData={rowData}
         setRowData={setRowData}
+        gridOptions={gridOptions}
+        defaultColDef={defaultColDef}
       />
     </>
   );

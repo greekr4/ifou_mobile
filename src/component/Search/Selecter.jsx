@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import { search_option } from "../../Redux";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { search_option } from '../../Redux';
 
 const S_TR = styled.tr`
   border-bottom: 1px solid #adadad;
@@ -72,6 +72,7 @@ const getCurrentDate = () => {
 const Selecter = ({
   option,
   handleDPOpen,
+  handleDPOpen2,
   sappdd,
   setSappdd,
   eappdd,
@@ -92,64 +93,64 @@ const Selecter = ({
   const [deplist, setDeplist] = useState([]);
 
   const dispatch = useDispatch();
-  const ReduceAuth = useSelector((state) => state);
+  const ReduceAuth = useSelector(state => state);
 
-  const handleInputSappdd = (e) => {
+  const handleInputSappdd = e => {
     setSappdd(e.target.value);
   };
 
-  const handleInputEappdd = (e) => {
+  const handleInputEappdd = e => {
     setEappdd(e.target.value);
   };
 
-  const handleInputSexpdd = (e) => {
+  const handleInputSexpdd = e => {
     setSexpdd(e.target.value);
   };
 
-  const handleInputEexpdd = (e) => {
+  const handleInputEexpdd = e => {
     setEexpdd(e.target.value);
   };
 
   useEffect(() => {
-    if (option === "tid") {
+    if (option === 'tid') {
       //tid
       axios
-        .post("http://nxm.ifou.co.kr:28080/common/get_tidcd", null, {
+        .post('http://nxm.ifou.co.kr:28080/common/get_tidcd', null, {
           params: {
-            orgcd: "OR0016",
+            orgcd: 'OR0016',
           },
         })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
-          console.log("tid로드");
+          console.log('tid로드');
           setTidlist(res.data);
         })
         .catch();
-    } else if (option === "card") {
+    } else if (option === 'card') {
       //card
       axios
-        .post("http://nxm.ifou.co.kr:28080/common/get_acqcd", null, {
+        .post('http://nxm.ifou.co.kr:28080/common/get_acqcd', null, {
           params: {
-            orgcd: "OR0016",
+            orgcd: 'OR0016',
           },
         })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
-          console.log("card로드");
+          console.log('card로드');
           setCardlist(res.data);
         })
         .catch();
-    } else if (option === "dep") {
+    } else if (option === 'dep') {
       //card
       axios
-        .post("http://nxm.ifou.co.kr:28080/common/get_depcd", null, {
+        .post('http://nxm.ifou.co.kr:28080/common/get_depcd', null, {
           params: {
-            orgcd: "OR0016",
+            orgcd: 'OR0016',
           },
         })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
-          console.log("dep로드");
+          console.log('dep로드');
           setDeplist(res.data);
         })
         .catch();
@@ -170,20 +171,20 @@ const Selecter = ({
       data: data,
     });
   };
-  const handleCard = (e) => {
+  const handleCard = e => {
     setCard(e.target.value);
   };
 
-  const handleTid = (e) => {
+  const handleTid = e => {
     setTid(e.target.value);
   };
 
-  const handleDep = (e) => {
+  const handleDep = e => {
     setDep(e.target.value);
   };
 
   switch (option) {
-    case "card":
+    case 'card':
       return (
         <S_TR>
           <S_TH>카드사</S_TH>
@@ -193,7 +194,7 @@ const Selecter = ({
                 <option key="" value="">
                   전체카드
                 </option>
-                {cardlist.map((item) => (
+                {cardlist.map(item => (
                   <option key={item.pur_koces} value={item.pur_koces}>
                     {item.pur_nm}
                   </option>
@@ -203,7 +204,7 @@ const Selecter = ({
           </S_TD>
         </S_TR>
       );
-    case "appdd":
+    case 'appdd':
       return (
         <S_TR>
           <S_TH>승인일자</S_TH>
@@ -212,7 +213,7 @@ const Selecter = ({
               <S_DD_INPUT
                 value={sappdd}
                 id="sappdd"
-                onClick={() => handleDPOpen("sappdd")}
+                onClick={() => handleDPOpen('sappdd')}
                 onChange={handleInputSappdd}
                 readOnly
               ></S_DD_INPUT>
@@ -220,7 +221,7 @@ const Selecter = ({
               <S_DD_INPUT
                 value={eappdd}
                 id="eappdd"
-                onClick={() => handleDPOpen("eappdd")}
+                onClick={() => handleDPOpen2('eappdd')}
                 onChange={handleInputEappdd}
                 readOnly
               ></S_DD_INPUT>
@@ -228,7 +229,7 @@ const Selecter = ({
           </S_TD>
         </S_TR>
       );
-    case "dep":
+    case 'dep':
       return (
         <S_TR>
           <S_TH>사업부</S_TH>
@@ -238,7 +239,7 @@ const Selecter = ({
                 <option key="" value="">
                   전체
                 </option>
-                {deplist.map((item) => (
+                {deplist.map(item => (
                   <option key={item.dep_cd} value={item.dep_cd}>
                     {item.dep_nm}
                   </option>
@@ -248,7 +249,7 @@ const Selecter = ({
           </S_TD>
         </S_TR>
       );
-    case "expdd":
+    case 'expdd':
       return (
         <S_TR>
           <S_TH>입금일자</S_TH>
@@ -257,7 +258,7 @@ const Selecter = ({
               <S_DD_INPUT
                 value={sexpdd}
                 id="sexpdd"
-                onClick={() => handleDPOpen("sexpdd")}
+                onClick={() => handleDPOpen('sexpdd')}
                 onChange={handleInputSexpdd}
                 readOnly
               ></S_DD_INPUT>
@@ -265,7 +266,7 @@ const Selecter = ({
               <S_DD_INPUT
                 value={eexpdd}
                 id="eexpdd"
-                onClick={() => handleDPOpen("eexpdd")}
+                onClick={() => handleDPOpen2('eexpdd')}
                 onChange={handleInputEexpdd}
                 readOnly
               ></S_DD_INPUT>
@@ -273,7 +274,7 @@ const Selecter = ({
           </S_TD>
         </S_TR>
       );
-    case "tid":
+    case 'tid':
       return (
         <S_TR>
           <S_TH>단말기</S_TH>
@@ -283,7 +284,7 @@ const Selecter = ({
                 <option key="1" value="1">
                   단말기1
                 </option>
-                {tidlist.map((item) => (
+                {tidlist.map(item => (
                   <option key={item.tid_cd} value={item.tid_cd}>
                     {item.tid_nm}
                   </option>

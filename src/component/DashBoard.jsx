@@ -393,7 +393,7 @@ const DashBoard = ({ title }) => {
           );
         });
     }
-  });
+  }, [mappdd]);
 
   const onclickPrevAppdd = () => {
     const now = new Date(
