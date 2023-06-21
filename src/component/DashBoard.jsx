@@ -1,3 +1,4 @@
+import { type } from '@testing-library/user-event/dist/type';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
@@ -188,7 +189,11 @@ const DashBoard = ({ title }) => {
     today.getFullYear() +
     String(today.getMonth() + 1).padStart(2, '0') +
     String(today.getDate()).padStart(2, '0');
+  const today_mappdd =
+    today.getFullYear() + String(today.getMonth() + 1).padStart(2, '0');
   const [appdd, setAppdd] = useState(today_appdd);
+  const [expdd, setExpdd] = useState(today_appdd);
+  const [mappdd, setMappdd] = useState(today_mappdd);
 
   const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
   const year = String(appdd).slice(0, 4);
@@ -196,6 +201,18 @@ const DashBoard = ({ title }) => {
   const date = String(appdd).slice(6, 8);
   let fulldate = new Date(year, parseInt(month - 1), date);
   const week = daysOfWeek[fulldate.getDay()];
+
+  const year_expdd = String(expdd).slice(0, 4);
+  const month_expdd = String(expdd).slice(4, 6);
+  const date_expdd = String(expdd).slice(6, 8);
+  let fulldate_expdd = new Date(
+    year_expdd,
+    parseInt(month_expdd - 1),
+    date_expdd,
+  );
+  const week_expdd = daysOfWeek[fulldate_expdd.getDay()];
+
+  const month_mappdd = String(mappdd).slice(4, 6);
 
   const [ccCnt, setCcCnt] = useState(0);
   const [ccAmt, setCcAmt] = useState(0);
@@ -206,73 +223,250 @@ const DashBoard = ({ title }) => {
   const [sumCnt, setSumCnt] = useState(0);
   const [sumAmt, setSumAmt] = useState(0);
 
+  const [saleAmt, setSaleAmt] = useState(0);
+  const [fee, setFee] = useState(0);
+  const [sumSaleAmt, setSumSaleAmt] = useState(0);
+
+  const [mccCnt, setMccCnt] = useState(0);
+  const [mccAmt, setMccAmt] = useState(0);
+  const [mcbCnt, setMcbCnt] = useState(0);
+  const [mcbAmt, setMcbAmt] = useState(0);
+  const [micCnt, setMicCnt] = useState(0);
+  const [micAmt, setMicAmt] = useState(0);
+  const [msumCnt, setMsumCnt] = useState(0);
+  const [msumAmt, setMsumAmt] = useState(0);
+
+  useEffect(() => {
+    if (title === '01') {
+      axios
+        .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
+          params: {
+            orgcd: 'OR0016',
+            appdd: appdd,
+          },
+        })
+        .then(res => {
+          console.log(res.data);
+          setCcCnt(
+            res.data.CC_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setCcAmt(
+            res.data.CC_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setCbCnt(
+            res.data.CB_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setCbAmt(
+            res.data.CB_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setIcCnt(
+            res.data.IC_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setIcAmt(
+            res.data.IC_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setSumCnt(
+            res.data.SUM_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setSumAmt(
+            res.data.SUM_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+        });
+    }
+  }, [appdd]);
+
+  useEffect(() => {
+    if (title === '02') {
+      axios
+        .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard2', null, {
+          params: {
+            orgcd: 'OR0016',
+            expdd: expdd,
+          },
+        })
+        .then(res => {
+          console.log(res.data);
+          setSaleAmt(
+            res.data.SALE_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setFee(
+            res.data.FEE.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setSumSaleAmt(
+            res.data.SUM.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+        });
+    }
+  }, [expdd]);
+
+  useEffect(() => {
+    if (title === '03') {
+      axios
+        .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
+          params: {
+            orgcd: 'OR0016',
+            appdd: mappdd,
+          },
+        })
+        .then(res => {
+          console.log(res.data);
+          setMccCnt(
+            res.data.CC_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setMccAmt(
+            res.data.CC_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setMcbCnt(
+            res.data.CB_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setMcbAmt(
+            res.data.CB_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setMicCnt(
+            res.data.IC_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setMicAmt(
+            res.data.IC_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setMsumCnt(
+            res.data.SUM_CNT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+          setMsumAmt(
+            res.data.SUM_AMT.toLocaleString(undefined, {
+              style: 'decimal',
+              maximumFractionDigits: 0,
+            }),
+          );
+        });
+    }
+  });
+
+  const onclickPrevAppdd = () => {
+    const now = new Date(
+      appdd.slice(0, 4),
+      parseInt(appdd.slice(4, 6)) - 1,
+      parseInt(appdd.slice(6, 8)) - 1,
+    );
+    console.log(now);
+    setAppdd(
+      now.getFullYear() +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0'),
+    );
+  };
+  const onclickNextAppdd = () => {
+    const now = new Date(
+      appdd.slice(0, 4),
+      parseInt(appdd.slice(4, 6)) - 1,
+      parseInt(appdd.slice(6, 8)) + 1,
+    );
+    console.log(now);
+    setAppdd(
+      now.getFullYear() +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0'),
+    );
+  };
+
+  const onclickPrevExpdd = () => {
+    const now = new Date(
+      expdd.slice(0, 4),
+      parseInt(expdd.slice(4, 6)) - 1,
+      parseInt(expdd.slice(6, 8)) - 1,
+    );
+
+    setExpdd(
+      now.getFullYear() +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0'),
+    );
+  };
+  const onclickNextExpdd = () => {
+    const now = new Date(
+      expdd.slice(0, 4),
+      parseInt(expdd.slice(4, 6)) - 1,
+      parseInt(expdd.slice(6, 8)) + 1,
+    );
+
+    setExpdd(
+      now.getFullYear() +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0'),
+    );
+  };
+
+  const onclickPrevMappdd = () => {
+    const now = new Date(
+      mappdd.slice(0, 4),
+      parseInt(mappdd.slice(4, 6)) - 1,
+      0,
+    );
+    setMappdd(now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0'));
+  };
+  const onclickNextMappdd = () => {
+    const now = new Date(
+      mappdd.slice(0, 4),
+      parseInt(mappdd.slice(4, 6)) - 1,
+      35,
+    );
+    setMappdd(now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0'));
+  };
+
   if (title === '01') {
-    axios
-      .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
-        params: {
-          orgcd: 'OR0016',
-          appdd: appdd,
-        },
-      })
-      .then(res => {
-        console.log(res.data);
-        setCcCnt(
-          res.data.CC_CNT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-        setCcAmt(
-          res.data.CC_AMT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-        setCbCnt(
-          res.data.CB_CNT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-        setCbAmt(
-          res.data.CB_AMT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-        setIcCnt(
-          res.data.IC_CNT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-        setIcAmt(
-          res.data.IC_AMT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-        setSumCnt(
-          res.data.SUM_CNT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-        setSumAmt(
-          res.data.SUM_AMT.toLocaleString(undefined, {
-            style: 'decimal',
-            maximumFractionDigits: 0,
-          }),
-        );
-      });
-
-    const onclickPrev = () => {
-      setAppdd('20230301');
-    };
-    const onclickNext = () => {
-      setAppdd('20230302');
-    };
-
     return (
       <DAYBOX>
         <TITLE_WRAP>
@@ -281,14 +475,14 @@ const DashBoard = ({ title }) => {
         </TITLE_WRAP>
         <DASHBOX>
           <TITLE_BOX>
-            <CHANGE_BTN className="prev" onClick={onclickPrev} />
+            <CHANGE_BTN className="prev" onClick={onclickPrevAppdd} />
             <TEXT_SPAN>
               <MM_DD>{month}</MM_DD>
               <MM_DD_TEXT>월</MM_DD_TEXT>
               <MM_DD>{date}</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
               <DAY_TEXT>({week})</DAY_TEXT>
             </TEXT_SPAN>
-            <CHANGE_BTN className="next" onClick={onclickNext} />
+            <CHANGE_BTN className="next" onClick={onclickNextAppdd} />
           </TITLE_BOX>
           <ITEM_BOX>
             <ITEM_TEXT>신용 ({ccCnt}건)</ITEM_TEXT>
@@ -318,26 +512,26 @@ const DashBoard = ({ title }) => {
         </TITLE_WRAP>
         <DASHBOX>
           <TITLE_BOX>
-            <CHANGE_BTN className="prev" />
+            <CHANGE_BTN className="prev" onClick={onclickPrevExpdd} />
             <TEXT_SPAN>
-              <MM_DD>04</MM_DD>
+              <MM_DD>{month_expdd}</MM_DD>
               <MM_DD_TEXT>월</MM_DD_TEXT>
-              <MM_DD>17</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
-              <DAY_TEXT>(월)</DAY_TEXT>
+              <MM_DD>{date_expdd}</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
+              <DAY_TEXT>({week_expdd})</DAY_TEXT>
             </TEXT_SPAN>
-            <CHANGE_BTN className="next" />
+            <CHANGE_BTN className="next" onClick={onclickNextExpdd} />
           </TITLE_BOX>
           <ITEM_BOX>
             <ITEM_TEXT>매출</ITEM_TEXT>
-            <ITEM_AMT>1,100,000원</ITEM_AMT>
+            <ITEM_AMT>{saleAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="border-none">
             <ITEM_TEXT>수수료</ITEM_TEXT>
-            <ITEM_AMT>10,000원</ITEM_AMT>
+            <ITEM_AMT>{fee}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="sum-item">
             <ITEM_TEXT>입금예정액</ITEM_TEXT>
-            <ITEM_AMT>1,250,000원</ITEM_AMT>
+            <ITEM_AMT>{sumSaleAmt}원</ITEM_AMT>
           </ITEM_BOX>
         </DASHBOX>
       </DAYBOX>
@@ -351,29 +545,30 @@ const DashBoard = ({ title }) => {
         </TITLE_WRAP>
         <DASHBOX>
           <TITLE_BOX>
-            <CHANGE_BTN className="prev" />
+            <CHANGE_BTN className="prev" onClick={onclickPrevMappdd} />
             <TEXT_SPAN>
               <MM_DD>
-                04<MM_DD_SUB>월</MM_DD_SUB>
+                {month_mappdd}
+                <MM_DD_SUB>월</MM_DD_SUB>
               </MM_DD>
             </TEXT_SPAN>
-            <CHANGE_BTN className="next" />
+            <CHANGE_BTN className="next" onClick={onclickNextMappdd} />
           </TITLE_BOX>
           <ITEM_BOX>
-            <ITEM_TEXT>신용(1,123건)</ITEM_TEXT>
-            <ITEM_AMT>1,100,000원</ITEM_AMT>
+            <ITEM_TEXT>신용({mccCnt}건)</ITEM_TEXT>
+            <ITEM_AMT>{mccAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX>
-            <ITEM_TEXT>현금(10건)</ITEM_TEXT>
-            <ITEM_AMT>10,000원</ITEM_AMT>
+            <ITEM_TEXT>현금({mcbCnt})</ITEM_TEXT>
+            <ITEM_AMT>{mcbAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="border-none">
-            <ITEM_TEXT>현금IC(1건)</ITEM_TEXT>
-            <ITEM_AMT>5,000원</ITEM_AMT>
+            <ITEM_TEXT>현금IC({micCnt})</ITEM_TEXT>
+            <ITEM_AMT>{micAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="sum-item">
-            <ITEM_TEXT>합계(1,134건)</ITEM_TEXT>
-            <ITEM_AMT>1,250,000원</ITEM_AMT>
+            <ITEM_TEXT>합계({msumCnt}건)</ITEM_TEXT>
+            <ITEM_AMT>{msumAmt}원</ITEM_AMT>
           </ITEM_BOX>
         </DASHBOX>
       </DAYBOX>
