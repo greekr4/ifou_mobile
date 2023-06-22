@@ -310,12 +310,14 @@ const SearchBox = ({ page }) => {
           headerName: '합계건수',
           cellClass: 'number',
           valueFormatter: numberCellFormatter,
+          width: 140,
         },
         {
           field: 'amt',
           headerName: '합계금액',
           cellClass: 'number',
           valueFormatter: numberCellFormatter,
+          width: 220,
         },
       ]);
     } else if (page === 'sub02') {
