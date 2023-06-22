@@ -31,6 +31,25 @@ const GirdComponent = ({
     Swal.fire(`${clickedValue}`, '', '');
   };
 
+  const getRowStyle = params => {
+    console.log(params);
+    if (params.data.appdd === '소계') {
+      return {
+        backgroundColor: 'rgb(217,217,217)',
+        color: 'balck',
+        fontWeight: '600',
+      };
+    } else if (params.data.appdd === '합계') {
+      return {
+        backgroundColor: 'rgb(218,238,243)',
+        color: 'rgb(27,120,193)',
+        fontWeight: '600',
+      };
+    } else {
+      return null;
+    }
+  };
+
   return (
     <>
       <GRID_WRAP>
@@ -43,6 +62,7 @@ const GirdComponent = ({
             gridOptions={gridOptions}
             defaultColDef={defaultColDef}
             onCellClicked={handleCellClicked}
+            getRowStyle={getRowStyle}
           ></AgGridReact>
         </div>
       </GRID_WRAP>

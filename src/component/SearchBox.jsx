@@ -270,7 +270,7 @@ const SearchBox = ({ page }) => {
       const subtotalCnt = rows.reduce((total, row) => total + row.cnt, 0);
       const subtotalAmt = rows.reduce((total, row) => total + row.amt, 0);
       subtotalRows.push({
-        appdd: '토탈',
+        appdd: '소계',
         dep: '',
         card: card,
         cnt: subtotalCnt,
@@ -288,7 +288,7 @@ const SearchBox = ({ page }) => {
         const nextCard = resdata[i + 1].card;
         const currentAppdd = resdata[i].appdd;
 
-        if (currentCard !== nextCard && currentAppdd !== '토탈') {
+        if (currentCard !== nextCard && currentAppdd !== '소계') {
           mergedData.splice(i + 1 + a, 0, subtotalRows[a]);
           a++;
         }
@@ -302,7 +302,11 @@ const SearchBox = ({ page }) => {
   useEffect(() => {
     if (page === 'sub01') {
       setColmnDefs([
-        { field: 'appdd', headerName: '승인일자' },
+        {
+          field: 'appdd',
+          headerName: '승인일자',
+          colSpan: params => (params.data.appdd === '소계' ? 2 : 1),
+        },
         { field: 'dep', headerName: '사업부' },
         { field: 'card', headerName: '카드사' },
         {

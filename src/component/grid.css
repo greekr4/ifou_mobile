@@ -10,4 +10,9 @@
     --ag-font-family: monospace;
 
     --ag-grid-size: 4px;
+    text-align: center;
 }
+
+    .ag-header-cell-label{
+        justify-content: center;
+    }
