@@ -14,38 +14,6 @@ const GirdComponent = ({
 }) => {
   const gridRef = useRef();
 
-  const addSubtotalRows = () => {
-    const groupedDate = {};
-
-    for (const row of rowData) {
-      const card = row.card;
-      if (!groupedDate[card]) {
-        groupedDate[card] = [];
-      }
-      groupedDate[card].push(row);
-    }
-
-    const subtotalRows = [];
-
-    for (const card in groupedDate) {
-      const rows = groupedDate[card];
-      const subtotalCnt = rows.reduce((total, row) => total + row.cnt, 0);
-      const subtotalAmt = rows.reduce((total, row) => total + row.amt, 0);
-      subtotalRows.push({
-        appdd: '토탈',
-        dep: '',
-        card: card,
-        cnt: subtotalCnt,
-        amt: subtotalAmt,
-      });
-    }
-    return [...rowData, ...subtotalRows];
-  };
-
-  const aa = addSubtotalRows();
-
-  setRowData(aa);
-
   const onFirstDataRendered = useCallback(params => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);

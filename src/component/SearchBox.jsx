@@ -190,7 +190,7 @@ const SearchBox = ({ page }) => {
     document.body.classList.remove('datepicker-open');
   };
 
-  const testbtn = () => {
+  const testbtn = async () => {
     const p_sappdd = `20${
       sappdd.substr(0, 2) + sappdd.substr(3, 2) + sappdd.substr(6, 2)
     }`;
@@ -208,9 +208,8 @@ const SearchBox = ({ page }) => {
       eexpdd: eexpdd,
     }).toString();
     console.log(qrystring);
-
-    axios
-      .post('http://nxm.ifou.co.kr:28080/sub01', null, {
+    try {
+      const res = await axios.post('http://nxm.ifou.co.kr:28080/sub01', null, {
         params: {
           sappdd: p_sappdd,
           eappdd: p_eappdd,
@@ -218,14 +217,22 @@ const SearchBox = ({ page }) => {
           depcd: dep,
           acqcd: card,
         },
-      })
-      .then(res => {
-        console.log(res.data);
-        setRowData(res.data);
       });
+
+      console.log(res.data);
+      setRowData(res.data);
+
+      const aa = await addSubtotalRows(res.data);
+      setRowData(aa);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /* 그리드 */
+  const [columnDefs, setColmnDefs] = useState([]);
+  const [rowData, setRowData] = useState([]);
+
   const numberCellFormatter = params => {
     return Math.floor(params.value)
       .toString()
@@ -244,6 +251,53 @@ const SearchBox = ({ page }) => {
   //setRowData(addSubtotalRows());
   //addSubtotalRows();
   //const updatedRowData = addSubtotalRows();
+
+  const addSubtotalRows = resdata => {
+    const groupedDate = {};
+
+    for (const row of resdata) {
+      const card = row.card;
+      if (!groupedDate[card]) {
+        groupedDate[card] = [];
+      }
+      groupedDate[card].push(row);
+    }
+
+    const subtotalRows = [];
+
+    for (const card in groupedDate) {
+      const rows = groupedDate[card];
+      const subtotalCnt = rows.reduce((total, row) => total + row.cnt, 0);
+      const subtotalAmt = rows.reduce((total, row) => total + row.amt, 0);
+      subtotalRows.push({
+        appdd: '토탈',
+        dep: '',
+        card: card,
+        cnt: subtotalCnt,
+        amt: subtotalAmt,
+      });
+    }
+    console.log(subtotalRows);
+
+    let mergedData = [...resdata];
+    console.log(mergedData);
+    let a = 0;
+    for (let i = 0; i < resdata.length; i++) {
+      const currentCard = resdata[i].card;
+      if (i < resdata.length - 1) {
+        const nextCard = resdata[i + 1].card;
+        const currentAppdd = resdata[i].appdd;
+
+        if (currentCard !== nextCard && currentAppdd !== '토탈') {
+          mergedData.splice(i + 1 + a, 0, subtotalRows[a]);
+          a++;
+        }
+      } else if (i === resdata.length - 1) {
+        mergedData.splice(i + 2 + a, 0, subtotalRows[a]);
+      }
+    }
+    return [...mergedData];
+  };
 
   useEffect(() => {
     if (page === 'sub01') {
@@ -366,10 +420,6 @@ const SearchBox = ({ page }) => {
       ]);
     }
   }, []);
-
-  const [columnDefs, setColmnDefs] = useState([]);
-
-  const [rowData, setRowData] = useState([{ amt: 100, cnt: 100 }]);
 
   /* 그리드 끝 */
 
