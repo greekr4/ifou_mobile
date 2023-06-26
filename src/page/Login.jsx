@@ -1,16 +1,16 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import LoginTest from "../component/LoginTest";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import LoginComponent from '../component/LoginComponent';
 
 const Login = ({ onLogout }) => {
   const navigate = useNavigate();
   if (onLogout !== undefined) {
     onLogout();
-    navigate("/");
+    navigate('/');
   }
   return (
     <>
-      <LoginTest onLogout={onLogout} />
+      <LoginComponent onLogout={onLogout} />
     </>
   );
 };

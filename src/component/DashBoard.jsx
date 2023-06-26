@@ -183,7 +183,7 @@ const MM_DD_SUB = styled.span`
   font-weight: 200;
 `;
 
-const DashBoard = ({ title }) => {
+const DashBoard = ({ title, setLoading }) => {
   const today = new Date();
   const today_appdd =
     today.getFullYear() +
@@ -237,6 +237,7 @@ const DashBoard = ({ title }) => {
   const [msumAmt, setMsumAmt] = useState(0);
 
   useEffect(() => {
+    setLoading(true);
     if (title === '01') {
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
@@ -295,11 +296,13 @@ const DashBoard = ({ title }) => {
               maximumFractionDigits: 0,
             }),
           );
+          setLoading(false);
         });
     }
   }, [appdd]);
 
   useEffect(() => {
+    setLoading(true);
     if (title === '02') {
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard2', null, {
@@ -328,11 +331,13 @@ const DashBoard = ({ title }) => {
               maximumFractionDigits: 0,
             }),
           );
+          setLoading(false);
         });
     }
   }, [expdd]);
 
   useEffect(() => {
+    setLoading(true);
     if (title === '03') {
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
@@ -391,17 +396,31 @@ const DashBoard = ({ title }) => {
               maximumFractionDigits: 0,
             }),
           );
+          setLoading(false);
         });
     }
   }, [mappdd]);
 
   const onclickPrevAppdd = () => {
+    // ////////
+    // navigator.vibrate =
+    //   navigator.vibrate ||
+    //   navigator.webkitVibrate ||
+    //   navigator.mozVibrate ||
+    //   navigator.msVibrate;
+
+    // if (navigator.vibrate) {
+    //   navigator.vibrate(500);
+    // }
+
+    // ///////
+
     const now = new Date(
       appdd.slice(0, 4),
       parseInt(appdd.slice(4, 6)) - 1,
       parseInt(appdd.slice(6, 8)) - 1,
     );
-    console.log(now);
+
     setAppdd(
       now.getFullYear() +
         String(now.getMonth() + 1).padStart(2, '0') +
@@ -423,6 +442,7 @@ const DashBoard = ({ title }) => {
   };
 
   const onclickPrevExpdd = () => {
+    setLoading(true);
     const now = new Date(
       expdd.slice(0, 4),
       parseInt(expdd.slice(4, 6)) - 1,
@@ -434,6 +454,7 @@ const DashBoard = ({ title }) => {
         String(now.getMonth() + 1).padStart(2, '0') +
         String(now.getDate()).padStart(2, '0'),
     );
+    setLoading(false);
   };
   const onclickNextExpdd = () => {
     const now = new Date(
@@ -468,40 +489,42 @@ const DashBoard = ({ title }) => {
 
   if (title === '01') {
     return (
-      <DAYBOX>
-        <TITLE_WRAP>
-          <TITLE_IMG src="/Resource/Images/Icon/icon_title.png" />
-          전일매출현황
-        </TITLE_WRAP>
-        <DASHBOX>
-          <TITLE_BOX>
-            <CHANGE_BTN className="prev" onClick={onclickPrevAppdd} />
-            <TEXT_SPAN>
-              <MM_DD>{month}</MM_DD>
-              <MM_DD_TEXT>월</MM_DD_TEXT>
-              <MM_DD>{date}</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
-              <DAY_TEXT>({week})</DAY_TEXT>
-            </TEXT_SPAN>
-            <CHANGE_BTN className="next" onClick={onclickNextAppdd} />
-          </TITLE_BOX>
-          <ITEM_BOX>
-            <ITEM_TEXT>신용 ({ccCnt}건)</ITEM_TEXT>
-            <ITEM_AMT>{ccAmt}원</ITEM_AMT>
-          </ITEM_BOX>
-          <ITEM_BOX>
-            <ITEM_TEXT>현금 ({cbCnt}건)</ITEM_TEXT>
-            <ITEM_AMT>{cbAmt}원</ITEM_AMT>
-          </ITEM_BOX>
-          <ITEM_BOX className="border-none">
-            <ITEM_TEXT>현금IC ({icCnt}건)</ITEM_TEXT>
-            <ITEM_AMT>{icAmt}원</ITEM_AMT>
-          </ITEM_BOX>
-          <ITEM_BOX className="sum-item">
-            <ITEM_TEXT>합계 ({sumCnt}건)</ITEM_TEXT>
-            <ITEM_AMT>{sumAmt}원</ITEM_AMT>
-          </ITEM_BOX>
-        </DASHBOX>
-      </DAYBOX>
+      <>
+        <DAYBOX>
+          <TITLE_WRAP>
+            <TITLE_IMG src="/Resource/Images/Icon/icon_title.png" />
+            전일매출현황
+          </TITLE_WRAP>
+          <DASHBOX>
+            <TITLE_BOX>
+              <CHANGE_BTN className="prev" onClick={onclickPrevAppdd} />
+              <TEXT_SPAN>
+                <MM_DD>{month}</MM_DD>
+                <MM_DD_TEXT>월</MM_DD_TEXT>
+                <MM_DD>{date}</MM_DD> <MM_DD_TEXT>일</MM_DD_TEXT>
+                <DAY_TEXT>({week})</DAY_TEXT>
+              </TEXT_SPAN>
+              <CHANGE_BTN className="next" onClick={onclickNextAppdd} />
+            </TITLE_BOX>
+            <ITEM_BOX>
+              <ITEM_TEXT>신용 ({ccCnt}건)</ITEM_TEXT>
+              <ITEM_AMT>{ccAmt}원</ITEM_AMT>
+            </ITEM_BOX>
+            <ITEM_BOX>
+              <ITEM_TEXT>현금 ({cbCnt}건)</ITEM_TEXT>
+              <ITEM_AMT>{cbAmt}원</ITEM_AMT>
+            </ITEM_BOX>
+            <ITEM_BOX className="border-none">
+              <ITEM_TEXT>현금IC ({icCnt}건)</ITEM_TEXT>
+              <ITEM_AMT>{icAmt}원</ITEM_AMT>
+            </ITEM_BOX>
+            <ITEM_BOX className="sum-item">
+              <ITEM_TEXT>합계 ({sumCnt}건)</ITEM_TEXT>
+              <ITEM_AMT>{sumAmt}원</ITEM_AMT>
+            </ITEM_BOX>
+          </DASHBOX>
+        </DAYBOX>
+      </>
     );
   } else if (title === '02') {
     return (

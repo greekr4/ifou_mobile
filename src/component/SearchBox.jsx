@@ -239,8 +239,8 @@ const SearchBox = ({ page }) => {
         params: {
           sappdd: p_sappdd,
           eappdd: p_eappdd,
-          dep: dep,
-          card: card,
+          depcd: dep,
+          acqcd: card,
           tid: tid,
           sexpdd: p_sexpdd,
           eexpdd: p_eexpdd,
@@ -824,7 +824,7 @@ const SearchBox = ({ page }) => {
             setEappdd={setEappdd}
           />,
           <Selecter option="dep" dep={dep} setDep={setDep} />,
-          <Selecter option="card" card={card} setCard={setCard} />,
+          <Selecter option="tid" tid={tid} setTid={setTid} />,
         ])
       : page === 'sub04'
       ? (content = [

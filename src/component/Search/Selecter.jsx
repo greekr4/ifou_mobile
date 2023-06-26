@@ -192,7 +192,7 @@ const Selecter = ({
             <S_DIV>
               <S_SELECT onChange={handleCard}>
                 <option key="" value="">
-                  전체카드
+                  전체
                 </option>
                 {cardlist.map(item => (
                   <option key={item.pur_koces} value={item.pur_koces}>
@@ -281,8 +281,8 @@ const Selecter = ({
           <S_TD>
             <S_DIV>
               <S_SELECT onChange={handleTid}>
-                <option key="1" value="1">
-                  단말기1
+                <option key="" value="">
+                  전체
                 </option>
                 {tidlist.map(item => (
                   <option key={item.tid_cd} value={item.tid_cd}>
