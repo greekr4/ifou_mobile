@@ -215,10 +215,10 @@ const SearchBox = ({ page }) => {
         break;
     }
 
-    const p_sappdd = `20${eappdd.slice(0, 2)}${eappdd.slice(
+    const p_sappdd = `20${sappdd.slice(0, 2)}${sappdd.slice(
       3,
       5,
-    )}${eappdd.slice(6, 8)}`;
+    )}${sappdd.slice(6, 8)}`;
     const p_eappdd = `20${eappdd.slice(0, 2)}${eappdd.slice(
       3,
       5,
