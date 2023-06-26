@@ -32,14 +32,13 @@ const GirdComponent = ({
   };
 
   const getRowStyle = params => {
-    console.log(params);
-    if (params.data.appdd === '소계') {
+    if (params.data.appdd === '소계' || params.data.expdd === '소계') {
       return {
         backgroundColor: 'rgb(217,217,217)',
         color: 'balck',
         fontWeight: '600',
       };
-    } else if (params.data.appdd === '합계') {
+    } else if (params.data.appdd === '합계' || params.data.expdd === '합계') {
       return {
         backgroundColor: 'rgb(218,238,243)',
         color: 'rgb(27,120,193)',

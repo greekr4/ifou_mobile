@@ -190,40 +190,83 @@ const SearchBox = ({ page }) => {
     document.body.classList.remove('datepicker-open');
   };
 
-  const testbtn = async () => {
-    const p_sappdd = `20${
-      sappdd.substr(0, 2) + sappdd.substr(3, 2) + sappdd.substr(6, 2)
-    }`;
-    const p_eappdd = `20${
-      eappdd.substr(0, 2) + eappdd.substr(3, 2) + eappdd.substr(6, 2)
-    }`;
+  const handleSearchBtn = async () => {
+    let api;
+    switch (page) {
+      case 'sub01':
+        api = 'http://nxm.ifou.co.kr:28080/sub01';
+        break;
+      case 'sub02':
+        api = 'http://nxm.ifou.co.kr:28080/sub02';
+        break;
+      case 'sub03':
+        api = 'http://nxm.ifou.co.kr:28080/sub03';
+        break;
+      case 'sub04':
+        api = 'http://nxm.ifou.co.kr:28080/sub04';
+        break;
+      case 'sub05':
+        api = 'http://nxm.ifou.co.kr:28080/sub05';
+        break;
+      case 'sub06':
+        api = 'http://nxm.ifou.co.kr:28080/sub06';
+        break;
+      default:
+        break;
+    }
 
-    const qrystring = new URLSearchParams({
-      sappdd: sappdd,
-      eappdd: eappdd,
-      dep: dep,
-      card: card,
-      tid: tid,
-      sexpdd: sexpdd,
-      eexpdd: eexpdd,
-    }).toString();
-    console.log(qrystring);
+    const p_sappdd = `20${eappdd.slice(0, 2)}${eappdd.slice(
+      3,
+      5,
+    )}${eappdd.slice(6, 8)}`;
+    const p_eappdd = `20${eappdd.slice(0, 2)}${eappdd.slice(
+      3,
+      5,
+    )}${eappdd.slice(6, 8)}`;
+
+    const p_sexpdd = `20${sexpdd.slice(0, 2)}${sexpdd.slice(
+      3,
+      5,
+    )}${sexpdd.slice(6, 8)}`;
+
+    const p_eexpdd = `20${eexpdd.slice(0, 2)}${eexpdd.slice(
+      3,
+      5,
+    )}${eexpdd.slice(6, 8)}`;
+
     try {
-      const res = await axios.post('http://nxm.ifou.co.kr:28080/sub01', null, {
+      const res = await axios.post(api, null, {
         params: {
           sappdd: p_sappdd,
           eappdd: p_eappdd,
+          dep: dep,
+          card: card,
+          tid: tid,
+          sexpdd: p_sexpdd,
+          eexpdd: p_eexpdd,
           orgcd: 'OR0016',
-          depcd: dep,
-          acqcd: card,
         },
       });
 
-      console.log(res.data);
-      setRowData(res.data);
+      let rowdata;
 
-      const aa = await addSubtotalRows(res.data);
-      setRowData(aa);
+      if (page === 'sub01') {
+        rowdata = await addSubtotalRows_card(res.data);
+      } else if (page === 'sub02') {
+        rowdata = await addSubtotalRows_tid(res.data);
+      } else if (page === 'sub03') {
+        rowdata = await addSubtotalRows_appdd(res.data);
+      } else if (page === 'sub04') {
+        rowdata = await addSubtotalRows_appdd(res.data);
+      } else if (page === 'sub05') {
+        rowdata = await addSubtotalRows_sub05(res.data);
+      } else if (page === 'sub06') {
+        rowdata = await addSubtotalRows_sub06(res.data);
+      }
+      console.log(rowdata);
+
+      setRowData(rowdata);
+      //setRowData(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -248,12 +291,17 @@ const SearchBox = ({ page }) => {
     resizable: true,
   };
 
-  //setRowData(addSubtotalRows());
-  //addSubtotalRows();
-  //const updatedRowData = addSubtotalRows();
-
-  const addSubtotalRows = resdata => {
+  /* 소계 합계 추가 */
+  const addSubtotalRows_card = resdata => {
     const groupedDate = {};
+    const sumData = [];
+    let sum_cnt = 0;
+    let sum_amt = 0;
+
+    for (const row of resdata) {
+      sum_cnt += row.cnt;
+      sum_amt += row.amt;
+    }
 
     for (const row of resdata) {
       const card = row.card;
@@ -265,6 +313,14 @@ const SearchBox = ({ page }) => {
 
     const subtotalRows = [];
 
+    sumData.push({
+      appdd: '합계',
+      dep: '',
+      card: '',
+      cnt: sum_cnt,
+      amt: sum_amt,
+    });
+
     for (const card in groupedDate) {
       const rows = groupedDate[card];
       const subtotalCnt = rows.reduce((total, row) => total + row.cnt, 0);
@@ -272,15 +328,13 @@ const SearchBox = ({ page }) => {
       subtotalRows.push({
         appdd: '소계',
         dep: '',
-        card: card,
+        card: '',
         cnt: subtotalCnt,
         amt: subtotalAmt,
       });
     }
-    console.log(subtotalRows);
 
     let mergedData = [...resdata];
-    console.log(mergedData);
     let a = 0;
     for (let i = 0; i < resdata.length; i++) {
       const currentCard = resdata[i].card;
@@ -296,8 +350,273 @@ const SearchBox = ({ page }) => {
         mergedData.splice(i + 2 + a, 0, subtotalRows[a]);
       }
     }
+    mergedData.splice(0, 0, sumData[0]);
+
     return [...mergedData];
   };
+
+  const addSubtotalRows_tid = resdata => {
+    const groupedDate = {};
+    const sumData = [];
+    let sum_cnt = 0;
+    let sum_amt = 0;
+
+    for (const row of resdata) {
+      sum_cnt += row.cnt;
+      sum_amt += row.amt;
+    }
+
+    for (const row of resdata) {
+      const tidnm = row.tidnm;
+      if (!groupedDate[tidnm]) {
+        groupedDate[tidnm] = [];
+      }
+      groupedDate[tidnm].push(row);
+    }
+
+    const subtotalRows = [];
+
+    sumData.push({
+      appdd: '합계',
+      dep: '',
+      tidnm: '',
+      cnt: sum_cnt,
+      amt: sum_amt,
+    });
+
+    for (const tidnm in groupedDate) {
+      const rows = groupedDate[tidnm];
+      const subtotalCnt = rows.reduce((total, row) => total + row.cnt, 0);
+      const subtotalAmt = rows.reduce((total, row) => total + row.amt, 0);
+      subtotalRows.push({
+        appdd: '소계',
+        dep: '',
+        tidnm: tidnm,
+        cnt: subtotalCnt,
+        amt: subtotalAmt,
+      });
+    }
+
+    let mergedData = [...resdata];
+    let a = 0;
+    for (let i = 0; i < resdata.length; i++) {
+      const currentCard = resdata[i].tidnm;
+      if (i < resdata.length - 1) {
+        const nextCard = resdata[i + 1].tidnm;
+        const currentAppdd = resdata[i].appdd;
+
+        if (currentCard !== nextCard && currentAppdd !== '소계') {
+          mergedData.splice(i + 1 + a, 0, subtotalRows[a]);
+          a++;
+        }
+      } else if (i === resdata.length - 1) {
+        mergedData.splice(i + 2 + a, 0, subtotalRows[a]);
+      }
+    }
+    mergedData.splice(0, 0, sumData[0]);
+
+    return [...mergedData];
+  };
+
+  const addSubtotalRows_appdd = resdata => {
+    const groupedDate = {};
+    const sumData = [];
+    let sum_cnt = 0;
+    let sum_amt = 0;
+
+    for (const row of resdata) {
+      sum_cnt += row.cnt;
+      sum_amt += row.amt;
+    }
+
+    for (const row of resdata) {
+      const appdd = row.appdd + row.dep;
+      if (!groupedDate[appdd]) {
+        groupedDate[appdd] = [];
+      }
+      groupedDate[appdd].push(row);
+    }
+
+    console.log(groupedDate);
+    const subtotalRows = [];
+
+    sumData.push({
+      appdd: '합계',
+      dep: '',
+      tidnm: '',
+      cnt: sum_cnt,
+      amt: sum_amt,
+    });
+
+    for (const appdd in groupedDate) {
+      const rows = groupedDate[appdd];
+      const subtotalCnt = rows.reduce((total, row) => total + row.cnt, 0);
+      const subtotalAmt = rows.reduce((total, row) => total + row.amt, 0);
+      subtotalRows.push({
+        appdd: '소계',
+        dep: '',
+        tidnm: '',
+        cnt: subtotalCnt,
+        amt: subtotalAmt,
+      });
+    }
+
+    let mergedData = [...resdata];
+    let a = 0;
+    for (let i = 0; i < resdata.length; i++) {
+      const currentCard = resdata[i].appdd;
+      if (i < resdata.length - 1) {
+        const nextCard = resdata[i + 1].appdd;
+        const currentAppdd = resdata[i].appdd;
+
+        if (
+          currentCard !== nextCard &&
+          currentAppdd !== '소계' &&
+          subtotalRows[a]
+        ) {
+          mergedData.splice(i + 1 + a, 0, subtotalRows[a]);
+          a++;
+        }
+      } else if (i === resdata.length - 1 && subtotalRows[a]) {
+        mergedData.splice(i + 2 + a, 0, subtotalRows[a]);
+      }
+    }
+    mergedData.splice(0, 0, sumData[0]);
+    console.log(subtotalRows);
+    console.log(mergedData);
+    return [...mergedData];
+  };
+
+  const addSubtotalRows_sub05 = resdata => {
+    const groupedDate = {};
+    const sumData = [];
+    let sum_totsales = 0;
+    let sum_totreceivable = 0;
+
+    for (const row of resdata) {
+      sum_totsales += row.totsales;
+      sum_totreceivable += row.totreceivable;
+    }
+
+    for (const row of resdata) {
+      const dep = row.dep;
+      if (!groupedDate[dep]) {
+        groupedDate[dep] = [];
+      }
+      groupedDate[dep].push(row);
+    }
+
+    const subtotalRows = [];
+
+    sumData.push({
+      appdd: '합계',
+      dep: '',
+      totsales: sum_totsales,
+      totreceivable: sum_totreceivable,
+    });
+
+    for (const dep in groupedDate) {
+      const rows = groupedDate[dep];
+      const subtotalCnt = rows.reduce((total, row) => total + row.totsales, 0);
+      const subtotalAmt = rows.reduce(
+        (total, row) => total + row.totreceivable,
+        0,
+      );
+      subtotalRows.push({
+        appdd: '소계',
+        dep: '',
+        totsales: subtotalCnt,
+        totreceivable: subtotalAmt,
+      });
+    }
+
+    let mergedData = [...resdata];
+    let a = 0;
+    for (let i = 0; i < resdata.length; i++) {
+      const currentCard = resdata[i].dep;
+      if (i < resdata.length - 1) {
+        const nextCard = resdata[i + 1].dep;
+        const currentAppdd = resdata[i].appdd;
+
+        if (
+          currentCard !== nextCard &&
+          currentAppdd !== '소계' &&
+          subtotalRows[a]
+        ) {
+          mergedData.splice(i + 1 + a, 0, subtotalRows[a]);
+          a++;
+        }
+      } else if (i === resdata.length - 1 && subtotalRows[a]) {
+        mergedData.splice(i + 2 + a, 0, subtotalRows[a]);
+      }
+    }
+    mergedData.splice(0, 0, sumData[0]);
+    return [...mergedData];
+  };
+
+  const addSubtotalRows_sub06 = resdata => {
+    console.log(resdata);
+    const groupedDate = {};
+    const sumData = [];
+    let sum_amt = 0;
+
+    for (const row of resdata) {
+      sum_amt += row.amt;
+    }
+
+    for (const row of resdata) {
+      const dep = row.dep;
+      if (!groupedDate[dep]) {
+        groupedDate[dep] = [];
+      }
+      groupedDate[dep].push(row);
+    }
+
+    const subtotalRows = [];
+
+    sumData.push({
+      expdd: '합계',
+      dep: '',
+      card: '',
+      amt: sum_amt,
+    });
+
+    for (const dep in groupedDate) {
+      const rows = groupedDate[dep];
+      const subtotalAmt = rows.reduce((total, row) => total + row.amt, 0);
+      subtotalRows.push({
+        expdd: '소계',
+        dep: '',
+        card: '',
+        amt: subtotalAmt,
+      });
+    }
+
+    let mergedData = [...resdata];
+    let a = 0;
+    for (let i = 0; i < resdata.length; i++) {
+      const currentCard = resdata[i].dep;
+      if (i < resdata.length - 1) {
+        const nextCard = resdata[i + 1].dep;
+        const currentAppdd = resdata[i].expdd;
+
+        if (
+          currentCard !== nextCard &&
+          currentAppdd !== '소계' &&
+          subtotalRows[a]
+        ) {
+          mergedData.splice(i + 1 + a, 0, subtotalRows[a]);
+          a++;
+        }
+      } else if (i === resdata.length - 1 && subtotalRows[a]) {
+        mergedData.splice(i + 2 + a, 0, subtotalRows[a]);
+      }
+    }
+    mergedData.splice(0, 0, sumData[0]);
+    return [...mergedData];
+  };
+
+  /* /소계 합계 추가 */
 
   useEffect(() => {
     if (page === 'sub01') {
@@ -305,7 +624,12 @@ const SearchBox = ({ page }) => {
         {
           field: 'appdd',
           headerName: '승인일자',
-          colSpan: params => (params.data.appdd === '소계' ? 2 : 1),
+          colSpan: params =>
+            params.data.appdd === '소계'
+              ? 3
+              : params.data.appdd === '합계'
+              ? 3
+              : 1,
         },
         { field: 'dep', headerName: '사업부' },
         { field: 'card', headerName: '카드사' },
@@ -327,8 +651,14 @@ const SearchBox = ({ page }) => {
     } else if (page === 'sub02') {
       setColmnDefs([
         {
-          filed: 'appdd',
+          field: 'appdd',
           headerName: '승인일자',
+          colSpan: params =>
+            params.data.appdd === '소계'
+              ? 3
+              : params.data.appdd === '합계'
+              ? 3
+              : 1,
         },
         { field: 'dep', headerName: '사업부' },
         { field: 'tidnm', headerName: '단말기' },
@@ -348,8 +678,14 @@ const SearchBox = ({ page }) => {
     } else if (page === 'sub03') {
       setColmnDefs([
         {
-          filed: 'appdd',
+          field: 'appdd',
           headerName: '승인일자',
+          colSpan: params =>
+            params.data.appdd === '소계'
+              ? 3
+              : params.data.appdd === '합계'
+              ? 3
+              : 1,
         },
         { field: 'dep', headerName: '사업부' },
         { field: 'tidnm', headerName: '단말기' },
@@ -369,8 +705,14 @@ const SearchBox = ({ page }) => {
     } else if (page === 'sub04') {
       setColmnDefs([
         {
-          filed: 'appdd',
+          field: 'appdd',
           headerName: '승인일자',
+          colSpan: params =>
+            params.data.appdd === '소계'
+              ? 3
+              : params.data.appdd === '합계'
+              ? 3
+              : 1,
         },
         { field: 'dep', headerName: '사업부' },
         { field: 'tidnm', headerName: '단말기' },
@@ -390,8 +732,14 @@ const SearchBox = ({ page }) => {
     } else if (page === 'sub05') {
       setColmnDefs([
         {
-          filed: 'appdd',
-          headerName: '입금일자',
+          field: 'appdd',
+          headerName: '승인일자',
+          colSpan: params =>
+            params.data.appdd === '소계'
+              ? 2
+              : params.data.appdd === '합계'
+              ? 2
+              : 1,
         },
         { field: 'dep', headerName: '사업부' },
 
@@ -411,8 +759,14 @@ const SearchBox = ({ page }) => {
     } else if (page === 'sub06') {
       setColmnDefs([
         {
-          filed: 'expdd',
+          field: 'expdd',
           headerName: '입금일자',
+          colSpan: params =>
+            params.data.expdd === '소계'
+              ? 3
+              : params.data.expdd === '합계'
+              ? 3
+              : 1,
         },
         { field: 'dep', headerName: '사업부' },
         { field: 'card', headerName: '카드사' },
@@ -539,7 +893,7 @@ const SearchBox = ({ page }) => {
         <SEARCH_BOX_TABLE>{content}</SEARCH_BOX_TABLE>
       </SEARCH_BOX_DIV>
       <S_BTN_WRAP>
-        <S_BTN onClick={testbtn}>
+        <S_BTN onClick={handleSearchBtn}>
           <S_BTN_TEXT>
             <S_BTN_IMG />
             검색
