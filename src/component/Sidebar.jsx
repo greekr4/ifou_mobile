@@ -105,6 +105,16 @@ const Menu_icon = styled.img`
   padding-right: 0.5rem;
 `;
 
+const Li_div = styled.div`
+  display: flex;
+`;
+
+const Menu_icon_wrap = styled.div`
+  margin-top: 2px;
+`;
+
+const Menu_text_wrap = styled.div``;
+
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const outside = useRef();
 
@@ -157,49 +167,81 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <Menu_ul>
           <Menu_Link to="./main">
             <Menu_li>
-              <Menu_icon src="/Resource/Images/Icon/menu_main.png" />
-              메인
+              <Li_div>
+                <Menu_icon_wrap>
+                  <Menu_icon src="/Resource/Images/Icon/menu_main.png" />
+                </Menu_icon_wrap>
+                <Menu_text_wrap>메인</Menu_text_wrap>
+              </Li_div>
             </Menu_li>
           </Menu_Link>
           <Menu_Link to="./sub01">
             <Menu_li>
-              <Menu_icon src="/Resource/Images/Icon/menu_sub01.png" />
-              카드사별조회
+              <Li_div>
+                <Menu_icon_wrap>
+                  <Menu_icon src="/Resource/Images/Icon/menu_sub01.png" />
+                </Menu_icon_wrap>
+                <Menu_text_wrap>카드사별조회</Menu_text_wrap>
+              </Li_div>
             </Menu_li>
           </Menu_Link>
           <Menu_Link to="./sub02">
             <Menu_li>
-              <Menu_icon src="/Resource/Images/Icon/menu_sub02.png" />
-              단말기별조회
+              <Li_div>
+                <Menu_icon_wrap>
+                  <Menu_icon src="/Resource/Images/Icon/menu_sub02.png" />
+                </Menu_icon_wrap>
+                <Menu_text_wrap>단말기별조회</Menu_text_wrap>
+              </Li_div>
             </Menu_li>
           </Menu_Link>
           <Menu_Link to="./sub03">
             <Menu_li>
-              <Menu_icon src="/Resource/Images/Icon/menu_sub03.png" />
-              현금영수증조회
+              <Li_div>
+                <Menu_icon_wrap>
+                  <Menu_icon src="/Resource/Images/Icon/menu_sub03.png" />
+                </Menu_icon_wrap>
+                <Menu_text_wrap>현금영수증조회</Menu_text_wrap>
+              </Li_div>
             </Menu_li>
           </Menu_Link>
           <Menu_Link to="./sub04">
             <Menu_li>
-              <Menu_icon src="/Resource/Images/Icon/menu_sub04.png" />
-              현금IC거래조회
+              <Li_div>
+                <Menu_icon_wrap>
+                  <Menu_icon src="/Resource/Images/Icon/menu_sub04.png" />
+                </Menu_icon_wrap>
+                <Menu_text_wrap>현금IC거래조회</Menu_text_wrap>
+              </Li_div>
             </Menu_li>
           </Menu_Link>
           <Menu_Link to="./sub05">
             <Menu_li>
-              <Menu_icon src="/Resource/Images/Icon/menu_sub05.png" />
-              매출대비입금조회
+              <Li_div>
+                <Menu_icon_wrap>
+                  <Menu_icon src="/Resource/Images/Icon/menu_sub05.png" />
+                </Menu_icon_wrap>
+                <Menu_text_wrap>매출대비입금조회</Menu_text_wrap>
+              </Li_div>
             </Menu_li>
           </Menu_Link>
           <Menu_Link to="./sub06">
             <Menu_li>
-              <Menu_icon src="/Resource/Images/Icon/menu_sub06.png" />
-              입금조회
+              <Li_div>
+                <Menu_icon_wrap>
+                  <Menu_icon src="/Resource/Images/Icon/menu_sub06.png" />
+                </Menu_icon_wrap>
+                <Menu_text_wrap>입금조회</Menu_text_wrap>
+              </Li_div>
             </Menu_li>
           </Menu_Link>
           <Menu_li onClick={onClickLogout}>
-            <Menu_icon src="/Resource/Images/Icon/menu_logout.png" />
-            로그아웃
+            <Li_div>
+              <Menu_icon_wrap>
+                <Menu_icon src="/Resource/Images/Icon/menu_logout.png" />
+              </Menu_icon_wrap>
+              <Menu_text_wrap>로그아웃</Menu_text_wrap>
+            </Li_div>
           </Menu_li>
         </Menu_ul>
       </SideBarWrap>
