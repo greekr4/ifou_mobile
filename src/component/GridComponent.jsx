@@ -5,6 +5,7 @@ import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import './grid.css';
 import Swal from 'sweetalert2';
+import { useEffect } from 'react';
 
 const GirdComponent = ({
   columnDefs,
@@ -55,9 +56,9 @@ const GirdComponent = ({
         <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
           <AgGridReact
             ref={gridRef}
+            onFirstDataRendered={onFirstDataRendered}
             rowData={rowData}
             columnDefs={columnDefs}
-            onFirstDataRendered={onFirstDataRendered}
             gridOptions={gridOptions}
             defaultColDef={defaultColDef}
             onCellClicked={handleCellClicked}

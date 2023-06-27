@@ -1,6 +1,6 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 const Footerbox = styled.div`
   width: 100%;
@@ -14,10 +14,23 @@ const MainFooterbox = styled.div`
   background: #efefef;
   text-align: center;
   padding: 20px;
+  font-size: 3.5vw;
+`;
+
+const TelB = styled.div`
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TelImage = styled.img`
+  width: 4vw;
+  padding-right: 0.5rem;
 `;
 
 const Footer = () => {
-  const ReduceAuth = useSelector((state) => state);
+  const ReduceAuth = useSelector(state => state);
 
   return (
     <>
@@ -25,10 +38,13 @@ const Footer = () => {
         <Footerbox>ⓒ Gaon Solution 2023 Allright. Reserved.</Footerbox>
       ) : (
         <MainFooterbox>
-          (주)가온솔루션 경기도 고양시 덕양구 충장로 8<br />
+          <b>(주)가온솔루션</b> 경기도 고양시 덕양구 충장로 8<br />
           로터플레이스 1005호
           <br />
-          070-4610-3008 / 070-4610-3327
+          <TelB>
+            <TelImage src="/Resource/Images/Icon/tel_small.png" />
+            070-4610-3008 / 070-4610-3327
+          </TelB>
         </MainFooterbox>
       )}
     </>

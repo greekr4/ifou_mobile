@@ -1,28 +1,37 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { LoggedIn, uAuth } from "../Redux";
+import React, { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { LoggedIn, uAuth } from '../Redux';
 
 const SideBarWrap = styled.div`
-  z-index: 5;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
   padding: 12px;
-  border-radius: 15px 0 0 15px;
-  background-color: #e7e4e1;
+  /* border-radius: 15px 0 0 15px; */
+  background-color: #ffffff;
   height: 100%;
   width: 55%;
-  right: -70%;
+  right: -80%;
   top: 0;
   position: fixed;
   transition: 0.5s ease;
-  &.open {
-    right: 0;
-    transition: 0.5s ease;
-  }
-`;
+  z-index: 999;
 
-const Menu = styled.li`
-  margin: 30px 8px;
+  &.open {
+    /* top: 0; */
+    /* transition: 0.5s ease; */
+    /* animation: spin 0.5s linear; */
+    /* infinite */
+
+    right: 0;
+  }
 `;
 
 const ExitMenu = styled.span`
@@ -31,16 +40,81 @@ const ExitMenu = styled.span`
   font-size: 0.8rem;
 `;
 
-function Sidebar({ isOpen, setIsOpen }) {
+const LOADING_DIV = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* transition: 0.5s ease; */
+`;
+
+const MenuHeader_wrap = styled.div`
+  display: flex;
+  align-items: center;
+  border-bottom: 1.5px solid #ababab;
+`;
+
+const Space_wrap = styled.div`
+  flex-shrink: 0;
+  width: 12%;
+`;
+const Logo_wrap = styled.div`
+  flex-grow: 1;
+  text-align: center;
+`;
+const Exit_wrap = styled.div`
+  flex-shrink: 0;
+  white-space: nowrap;
+  width: 12%;
+`;
+
+const Logo_img = styled.img`
+  margin: 15px;
+  width: 50%;
+`;
+
+const Exit_img = styled.img`
+  display: block;
+  width: 25px;
+`;
+
+const Menu_ul = styled.ul`
+  padding-left: 15px;
+`;
+
+const Menu_li = styled.li`
+  list-style: none;
+  font-size: 20px;
+  line-height: 3rem;
+  color: black;
+  font-weight: 550;
+`;
+
+const Menu_Link = styled(Link)`
+  text-decoration: none;
+`;
+
+const Menu_icon = styled.img`
+  width: 20px;
+  padding-right: 0.5rem;
+`;
+
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const outside = useRef();
 
   useEffect(() => {
-    document.addEventListener("mousedown", handlerOutsie);
+    document.addEventListener('mousedown', handlerOutsie);
     return () => {
-      document.removeEventListener("mousedown", handlerOutsie);
+      document.removeEventListener('mousedown', handlerOutsie);
     };
   });
-  const handlerOutsie = (e) => {
+  const handlerOutsie = e => {
     if (!outside.current.contains(e.target)) {
       //현재 클릭한 곳이 메뉴 컴포넌트 안이 아니면 닫기
       toggleSide();
@@ -60,41 +134,78 @@ function Sidebar({ isOpen, setIsOpen }) {
     });
     dispatch({
       type: uAuth,
-      data: "X",
+      data: 'X',
     });
   };
 
   return (
-    <SideBarWrap id="sidebar" ref={outside} className={isOpen ? "open" : ""}>
-      <h1 onClick={toggleSide}>X</h1>
-      <ul>
-        <Menu>
-          <Link to="./main">메인</Link>
-        </Menu>
-        <Menu>
-          <Link to="./sub01">카드사별조회</Link>
-        </Menu>
-        <Menu>
-          <Link to="./sub02">단말기별조회</Link>
-        </Menu>
-        <Menu>
-          <Link to="./sub03">현금영수증조회</Link>
-        </Menu>
-        <Menu>
-          <Link to="./sub04">현금IC거래조회</Link>
-        </Menu>
-        <Menu>
-          <Link to="./sub05">매출대비입금조회</Link>
-        </Menu>
-        <Menu>
-          <Link to="./sub06">입금조회</Link>
-        </Menu>
-        <Menu>
-          <span onClick={onClickLogout}>LogOut</span>
-        </Menu>
-      </ul>
-    </SideBarWrap>
+    <>
+      <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
+        <MenuHeader_wrap>
+          <Space_wrap></Space_wrap>
+          <Logo_wrap>
+            <Logo_img src="/Resource/Images/Logo/logo_side.png" />
+          </Logo_wrap>
+          <Exit_wrap>
+            <Exit_img
+              src="/Resource/Images/Icon/exit.png"
+              onClick={toggleSide}
+            />
+            {/* <h1 onClick={toggleSide}>X</h1> */}
+          </Exit_wrap>
+        </MenuHeader_wrap>
+        <Menu_ul>
+          <Menu_Link to="./main">
+            <Menu_li>
+              <Menu_icon src="/Resource/Images/Icon/menu_main.png" />
+              메인
+            </Menu_li>
+          </Menu_Link>
+          <Menu_Link to="./sub01">
+            <Menu_li>
+              <Menu_icon src="/Resource/Images/Icon/menu_sub01.png" />
+              카드사별조회
+            </Menu_li>
+          </Menu_Link>
+          <Menu_Link to="./sub02">
+            <Menu_li>
+              <Menu_icon src="/Resource/Images/Icon/menu_sub02.png" />
+              단말기별조회
+            </Menu_li>
+          </Menu_Link>
+          <Menu_Link to="./sub03">
+            <Menu_li>
+              <Menu_icon src="/Resource/Images/Icon/menu_sub03.png" />
+              현금영수증조회
+            </Menu_li>
+          </Menu_Link>
+          <Menu_Link to="./sub04">
+            <Menu_li>
+              <Menu_icon src="/Resource/Images/Icon/menu_sub04.png" />
+              현금IC거래조회
+            </Menu_li>
+          </Menu_Link>
+          <Menu_Link to="./sub05">
+            <Menu_li>
+              <Menu_icon src="/Resource/Images/Icon/menu_sub05.png" />
+              매출대비입금조회
+            </Menu_li>
+          </Menu_Link>
+          <Menu_Link to="./sub06">
+            <Menu_li>
+              <Menu_icon src="/Resource/Images/Icon/menu_sub06.png" />
+              입금조회
+            </Menu_li>
+          </Menu_Link>
+          <Menu_li onClick={onClickLogout}>
+            <Menu_icon src="/Resource/Images/Icon/menu_logout.png" />
+            로그아웃
+          </Menu_li>
+        </Menu_ul>
+      </SideBarWrap>
+      {isOpen ? <LOADING_DIV /> : null}
+    </>
   );
-}
+};
 
 export default Sidebar;

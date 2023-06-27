@@ -266,7 +266,6 @@ const SearchBox = ({ page }) => {
       console.log(rowdata);
 
       setRowData(rowdata);
-      //setRowData(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -284,6 +283,9 @@ const SearchBox = ({ page }) => {
 
   const gridOptions = {
     suppressAggFuncInHeader: true,
+    localeText: {
+      noRowsToShow: '데이터 없음',
+    },
   };
 
   const defaultColDef = {
@@ -619,6 +621,7 @@ const SearchBox = ({ page }) => {
   /* /소계 합계 추가 */
 
   useEffect(() => {
+    handleSearchBtn();
     if (page === 'sub01') {
       setColmnDefs([
         {

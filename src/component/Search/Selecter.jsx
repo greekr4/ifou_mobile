@@ -42,7 +42,6 @@ const S_DD_INPUT = styled.input`
   margin: 5.25px auto;
   width: 45%;
   flex-grow: 1;
-  padding-left: 1em;
 `;
 
 const S_DIV = styled.div`
