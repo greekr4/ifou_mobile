@@ -8,6 +8,21 @@ import Selecter from './Search/Selecter';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 
+const LOADING_DIV = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LOADING_IMG = styled.img``;
+
 const SEARCH_BOX_DIV = styled.div`
   border-top: 2px solid #adadad;
   border-left: 2px solid #adadad;
@@ -131,6 +146,7 @@ const SearchBox = ({ page }) => {
   const [tid, setTid] = useState();
   const [card, setCard] = useState();
   const [dep, setDep] = useState();
+  const [loading, SetLoading] = useState(false);
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -191,6 +207,7 @@ const SearchBox = ({ page }) => {
   };
 
   const handleSearchBtn = async () => {
+    SetLoading(true);
     let api;
     switch (page) {
       case 'sub01':
@@ -263,12 +280,11 @@ const SearchBox = ({ page }) => {
       } else if (page === 'sub06') {
         rowdata = await addSubtotalRows_sub06(res.data);
       }
-      console.log(rowdata);
-
       setRowData(rowdata);
     } catch (error) {
       console.log(error);
     }
+    SetLoading(false);
   };
 
   /* 그리드 */
@@ -874,6 +890,11 @@ const SearchBox = ({ page }) => {
 
   return (
     <>
+      {loading ? (
+        <LOADING_DIV>
+          <LOADING_IMG src="/Resource/Images/Icon/loading.gif" />
+        </LOADING_DIV>
+      ) : null}
       <DatePicker
         //value={new Date(2022, 2, 2)}
         value={selectedDate}

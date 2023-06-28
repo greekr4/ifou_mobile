@@ -124,15 +124,17 @@ const ITEM_BOX = styled.div`
 
 const CHANGE_BTN = styled.div`
   margin: 0 10px;
-  background-position: center;
+
   width: 35px;
   height: 44px;
 
   &.prev {
     background: url('/Resource/Images/Icon/prev.png') no-repeat;
+    background-position: center;
   }
   &.next {
     background: url('/Resource/Images/Icon/next.png') no-repeat;
+    background-position: center;
   }
 `;
 
