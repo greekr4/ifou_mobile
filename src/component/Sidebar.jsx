@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { LoggedIn, uAuth } from '../Redux';
+import Swal from 'sweetalert2';
 
 const SideBarWrap = styled.div`
   @keyframes spin {
@@ -51,7 +52,7 @@ const LOADING_DIV = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* transition: 0.5s ease; */
+  transition: 0.5s ease;
 `;
 
 const MenuHeader_wrap = styled.div`
@@ -116,7 +117,15 @@ const Menu_icon_wrap = styled.div`
 const Menu_text_wrap = styled.div``;
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+  const handleMenuClick = link => {
+    setIsOpen(false);
+    setTimeout(() => {
+      navigate(link);
+    }, 250);
+  };
+
   const outside = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
@@ -138,13 +147,25 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const dispatch = useDispatch();
 
   const onClickLogout = () => {
-    dispatch({
-      type: LoggedIn,
-      data: false,
-    });
-    dispatch({
-      type: uAuth,
-      data: 'X',
+    Swal.fire({
+      title: '정말',
+      text: '로그아웃?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: '네',
+      cancelButtonText: '아니요',
+    }).then(res => {
+      if (res.isConfirmed) {
+        dispatch({
+          type: LoggedIn,
+          data: false,
+        });
+
+        dispatch({
+          type: uAuth,
+          data: 'X',
+        });
+      }
     });
   };
 
@@ -161,11 +182,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               src="/Resource/Images/Icon/exit.png"
               onClick={toggleSide}
             />
-            {/* <h1 onClick={toggleSide}>X</h1> */}
           </Exit_wrap>
         </MenuHeader_wrap>
         <Menu_ul>
-          <Menu_Link to="./main">
+          <div onClick={() => handleMenuClick('/main')}>
             <Menu_li>
               <Li_div>
                 <Menu_icon_wrap>
@@ -174,8 +194,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <Menu_text_wrap>메인</Menu_text_wrap>
               </Li_div>
             </Menu_li>
-          </Menu_Link>
-          <Menu_Link to="./sub01">
+          </div>
+          <div onClick={() => handleMenuClick('/sub01')}>
             <Menu_li>
               <Li_div>
                 <Menu_icon_wrap>
@@ -184,8 +204,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <Menu_text_wrap>카드사별조회</Menu_text_wrap>
               </Li_div>
             </Menu_li>
-          </Menu_Link>
-          <Menu_Link to="./sub02">
+          </div>
+          <div onClick={() => handleMenuClick('/sub02')}>
             <Menu_li>
               <Li_div>
                 <Menu_icon_wrap>
@@ -194,8 +214,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <Menu_text_wrap>단말기별조회</Menu_text_wrap>
               </Li_div>
             </Menu_li>
-          </Menu_Link>
-          <Menu_Link to="./sub03">
+          </div>
+          <div onClick={() => handleMenuClick('/sub03')}>
             <Menu_li>
               <Li_div>
                 <Menu_icon_wrap>
@@ -204,8 +224,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <Menu_text_wrap>현금영수증조회</Menu_text_wrap>
               </Li_div>
             </Menu_li>
-          </Menu_Link>
-          <Menu_Link to="./sub04">
+          </div>
+          <div onClick={() => handleMenuClick('/sub04')}>
             <Menu_li>
               <Li_div>
                 <Menu_icon_wrap>
@@ -214,8 +234,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <Menu_text_wrap>현금IC거래조회</Menu_text_wrap>
               </Li_div>
             </Menu_li>
-          </Menu_Link>
-          <Menu_Link to="./sub05">
+          </div>
+          <div onClick={() => handleMenuClick('/sub05')}>
             <Menu_li>
               <Li_div>
                 <Menu_icon_wrap>
@@ -224,8 +244,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <Menu_text_wrap>매출대비입금조회</Menu_text_wrap>
               </Li_div>
             </Menu_li>
-          </Menu_Link>
-          <Menu_Link to="./sub06">
+          </div>
+          <div onClick={() => handleMenuClick('/sub06')}>
             <Menu_li>
               <Li_div>
                 <Menu_icon_wrap>
@@ -234,7 +254,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <Menu_text_wrap>입금조회</Menu_text_wrap>
               </Li_div>
             </Menu_li>
-          </Menu_Link>
+          </div>
           <Menu_li onClick={onClickLogout}>
             <Li_div>
               <Menu_icon_wrap>

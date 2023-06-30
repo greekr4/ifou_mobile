@@ -513,7 +513,7 @@ const DashBoard = ({ title, setLoading }) => {
               <ITEM_AMT>{ccAmt}원</ITEM_AMT>
             </ITEM_BOX>
             <ITEM_BOX>
-              <ITEM_TEXT>현금 ({cbCnt}건)</ITEM_TEXT>
+              <ITEM_TEXT>현금영수증 ({cbCnt}건)</ITEM_TEXT>
               <ITEM_AMT>{cbAmt}원</ITEM_AMT>
             </ITEM_BOX>
             <ITEM_BOX className="border-none">
@@ -580,19 +580,19 @@ const DashBoard = ({ title, setLoading }) => {
             <CHANGE_BTN className="next" onClick={onclickNextMappdd} />
           </TITLE_BOX>
           <ITEM_BOX>
-            <ITEM_TEXT>신용({mccCnt}건)</ITEM_TEXT>
+            <ITEM_TEXT>신용 ({mccCnt}건)</ITEM_TEXT>
             <ITEM_AMT>{mccAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX>
-            <ITEM_TEXT>현금({mcbCnt})</ITEM_TEXT>
+            <ITEM_TEXT>현금영수증 ({mcbCnt}건)</ITEM_TEXT>
             <ITEM_AMT>{mcbAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="border-none">
-            <ITEM_TEXT>현금IC({micCnt})</ITEM_TEXT>
+            <ITEM_TEXT>현금IC ({micCnt}건)</ITEM_TEXT>
             <ITEM_AMT>{micAmt}원</ITEM_AMT>
           </ITEM_BOX>
           <ITEM_BOX className="sum-item">
-            <ITEM_TEXT>합계({msumCnt}건)</ITEM_TEXT>
+            <ITEM_TEXT>합계 ({msumCnt}건)</ITEM_TEXT>
             <ITEM_AMT>{msumAmt}원</ITEM_AMT>
           </ITEM_BOX>
         </DASHBOX>

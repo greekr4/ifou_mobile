@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import SearchBox from "../component/SearchBox";
+import React from 'react';
+import styled from 'styled-components';
+import SearchBox from '../component/SearchBox';
 
 const TITLE = styled.h2`
   padding-left: 10px;
@@ -9,7 +9,7 @@ const TITLE = styled.h2`
 const Sub05 = () => {
   return (
     <>
-      <TITLE>매출대비입금</TITLE>
+      <TITLE>매출대비입금조회</TITLE>
       <SearchBox page="sub05" />
     </>
   );

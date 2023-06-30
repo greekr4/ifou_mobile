@@ -1,5 +1,6 @@
 import { AgCheckbox } from 'ag-grid-community';
 import axios from 'axios';
+import { check } from 'prettier';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -63,18 +64,22 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 
 const StyledCheckbox = styled.div`
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: ${props => (props.checked ? '#2196F3' : '#FFF')};
+  width: 30px;
+  height: 30px;
+  //background: ${props => (props.checked ? '#2196F3' : '#FFF')};
+  background-image: url(/Resource/Images/Icon/check.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   border-radius: 3px;
   border: 1px solid #ccc;
   transition: all 0.2s;
 
-  // ${HiddenCheckbox}:focus + & {
-  //    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
-  //  }
+  ${HiddenCheckbox}:focus + & {
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
+  }
 
-  &:after {
+  /* &:after {
     content: '';
     display: block;
     //display: ${props => (props.checked ? 'block' : 'none')};
@@ -84,6 +89,38 @@ const StyledCheckbox = styled.div`
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
     margin: 4px;
+  } */
+`;
+
+const IdSave_div = styled.div`
+  position: relative;
+  top: 0;
+  left: 25px;
+`;
+
+const IdSave_input = styled.input.attrs({ type: 'checkbox' })`
+  opacity: 0;
+  width: 18px;
+  height: 18px;
+`;
+
+const IdSave_label = styled.label`
+  font-weight: 550;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    display: block;
+    width: 18px;
+    height: 18px;
+
+    background-image: ${props =>
+      props.checked
+        ? 'url(/Resource/Images/Icon/check.png)'
+        : 'url(/Resource/Images/Icon/checked.png)'};
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 `;
 
@@ -174,17 +211,17 @@ const LoginComponent = ({ onLogout }) => {
         placeholder="비밀번호"
         onKeyDown={handleOnKeyPress}
       />
-      <IdRememberDiv>
-        <HiddenCheckbox
-          id="rememberCheckbox"
+
+      <IdSave_div>
+        <IdSave_input
+          id="saveId"
           checked={isChecked}
           onChange={handleCheckboxChange}
         />
-        <StyledCheckbox checked={isChecked} />
-        <CheckboxLabel htmlFor="rememberCheckbox">
+        <IdSave_label htmlFor="saveId" checked={isChecked}>
           아이디 기억하기
-        </CheckboxLabel>
-      </IdRememberDiv>
+        </IdSave_label>
+      </IdSave_div>
       <div>
         <LoginButton type="button" onClick={onClickLogin}>
           로그인
