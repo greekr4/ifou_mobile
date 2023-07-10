@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -16,6 +17,11 @@ const MainFooterbox = styled.div`
   padding: 20px;
   font-size: 3.5vw;
 `;
+
+
+const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJpZm91IiwiaWF0IjoxNjg4NzA4MDExLCJleHAiOjE2ODg3MDgwNzEsInN1YiI6ImJtbG1iM1V5ZkU5U01EQXhObnh1ZFd4c2ZEQXhNak0wTlRZM09EbDhSMHhQUWw5TlRrZGZTVU5XUVU1OFIweFBRbDlOVGtkZlNVTldRVTU4VkVKZlRVNUhYMFJGVUVSQlZFRjhiblZzYkh3eE1qTjhRVk13TURBd01ERjg3TENvN0lTNDY0eUFmQT09In0.jEUgpfBZRcaw9zCzpv5bf6lL-sHi3Lc9-XsnQJUgV0k';
+console.log(jwtDecode(Token));
+
 
 const TelB = styled.div`
   font-weight: 600;

@@ -3,6 +3,7 @@ import DashBoard from '../component/DashBoard';
 import { useState } from 'react';
 import styled from 'styled-components';
 
+
 const LOADING_DIV = styled.div`
   position: fixed;
   top: 0;
@@ -16,6 +17,7 @@ const LOADING_DIV = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 
 const LOADING_IMG = styled.img``;
 
