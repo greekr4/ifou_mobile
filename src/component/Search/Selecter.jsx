@@ -30,6 +30,7 @@ const S_SELECT = styled.select`
   font-size: 15px;
   margin: 5px auto;
   width: 90%;
+  background-color: white;
 `;
 
 const S_DD_INPUT = styled.input`
@@ -42,6 +43,7 @@ const S_DD_INPUT = styled.input`
   margin: 5.25px auto;
   width: 45%;
   flex-grow: 1;
+  background-color: white;
 `;
 
 const S_DIV = styled.div`

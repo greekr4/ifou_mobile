@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LoggedIn, uAuth } from "../Redux";
+import Swal from "sweetalert2";
 
 const OtpBox = styled.div`
   width: 100%;
@@ -51,7 +52,7 @@ const OtpButton = styled.button`
 const OtpComponent = ({ onLogin }) => {
   const dispatch = useDispatch();
 
-  const [inputOtp, setInputOtp] = useState("123");
+  const [inputOtp, setInputOtp] = useState("");
 
   const handleInputOtp = (e) => {
     setInputOtp(e.target.value);
@@ -76,7 +77,7 @@ const OtpComponent = ({ onLogin }) => {
       });
       navigate("../main");
     } else {
-      alert("인증실패");
+      Swal.fire(`warning`, `인증번호를 확인해주세요.`, 'warning');
     }
   };
 

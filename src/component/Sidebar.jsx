@@ -148,8 +148,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   const onClickLogout = () => {
     Swal.fire({
-      title: '정말',
-      text: '로그아웃?',
+      title: 'question',
+      text: '로그아웃 하시겠습니까?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: '네',

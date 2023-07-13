@@ -888,6 +888,24 @@ const SearchBox = ({ page }) => {
         ])
       : '';
 
+      const dateConfig= {
+        'year': {
+            format: 'YYYY년',
+            caption: 'Year',
+            step: 1
+        },
+        'month': {
+            format: 'M월',
+            caption: 'Mon',
+            step: 1
+        },
+        'date': {
+            format: 'D일',
+            caption: 'Day',
+            step: 1
+        }
+      }
+
   return (
     <>
       {loading ? (
@@ -903,6 +921,9 @@ const SearchBox = ({ page }) => {
         onCancel={handleDPClose}
         confirmText="선택"
         cancelText="취소"
+        theme= 'ios'
+        dateConfig={dateConfig}
+        headerFormat = 'YYYY.MM.DD.'    
       />
       <DatePicker2
         //value={new Date(2022, 3, 2)}
@@ -912,6 +933,9 @@ const SearchBox = ({ page }) => {
         onCancel={handleDPClose2}
         confirmText="선택"
         cancelText="취소"
+        theme= 'ios'
+        dateConfig={dateConfig}
+        headerFormat = 'YYYY.MM.DD.'    
       />
       <SEARCH_BOX_DIV>
         <SEARCH_BOX_TABLE>{content}</SEARCH_BOX_TABLE>

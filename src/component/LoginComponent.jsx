@@ -4,6 +4,7 @@ import { check } from 'prettier';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 
 const Loginbox = styled.div`
   width: 100%;
@@ -135,8 +136,8 @@ const LoginComponent = ({ onLogout }) => {
     setIsChecked(!isChecked);
   };
 
-  const [inputId, setInputId] = useState('nifou2');
-  const [inputPw, setInputPw] = useState('1');
+  const [inputId, setInputId] = useState('');
+  const [inputPw, setInputPw] = useState('');
 
   const handleInputId = e => {
     setInputId(e.target.value);
@@ -176,7 +177,7 @@ const LoginComponent = ({ onLogout }) => {
           }
           navigate('otp');
         } else {
-          alert('정보없다');
+          Swal.fire(`warning`, `로그인 정보를 확인해주세요.`, 'warning');
         }
       })
       .catch(e => {
