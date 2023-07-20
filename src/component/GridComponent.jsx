@@ -26,10 +26,35 @@ const GirdComponent = ({
   `;
 
   const handleCellClicked = params => {
+    const allColumns = params.columnApi.getAllDisplayedColumns(); // 모든 표시된 컬럼 가져오기
+    
+    console.log('All Columns:', allColumns);
+
+    let swalvalue = "";
+    allColumns.forEach(element => {
+      console.log(element.userProvidedColDef.headerName);
+      console.log(params.data[element.userProvidedColDef.field]);
+      const headerName = element.userProvidedColDef.headerName;
+      const cellvalue = !isNaN(params.data[element.userProvidedColDef.field]) ?
+      params.data[element.userProvidedColDef.field].toLocaleString()
+      : params.data[element.userProvidedColDef.field];
+      const res = `<tr><th style="width:50%;padding:5px;">${headerName}</th><td>${cellvalue}</td></tr>`;
+      swalvalue += res;
+    });
+
+
+    swalvalue = `<table style="width:100%">${swalvalue}</table>`
+
+
+    console.log(params);
     const clickedValue = !isNaN(params.value)
       ? params.value.toLocaleString()
       : params.value;
-    Swal.fire(`${clickedValue}`, '', '');
+
+    const clickedCellValue = params.data;
+    console.log(swalvalue);
+    // Swal.fire(`${clickedValue}`, '', '');
+    Swal.fire(`상세보기`, `${swalvalue}`, '');
   };
 
   const getRowStyle = params => {
@@ -59,6 +84,7 @@ const GirdComponent = ({
             onFirstDataRendered={onFirstDataRendered}
             rowData={rowData}
             columnDefs={columnDefs}
+            suppressDragLeaveHidesColumns={true}
             gridOptions={gridOptions}
             defaultColDef={defaultColDef}
             onCellClicked={handleCellClicked}

@@ -302,11 +302,14 @@ const SearchBox = ({ page }) => {
     localeText: {
       noRowsToShow: '데이터 없음',
     },
+
   };
 
   const defaultColDef = {
     sortable: true,
     resizable: true,
+    suppressMovable: true,  //드래그앤 드롭 억제
+
   };
 
   /* 소계 합계 추가 */
@@ -510,9 +513,13 @@ const SearchBox = ({ page }) => {
     const sumData = [];
     let sum_totsales = 0;
     let sum_totreceivable = 0;
+    let sum_totfee = 0;
+    let sum_totsaleamt = 0;
 
     for (const row of resdata) {
       sum_totsales += row.totsales;
+      sum_totfee += row.totfee;
+      sum_totsaleamt += row.totsaleamt;
       sum_totreceivable += row.totreceivable;
     }
 
@@ -530,6 +537,8 @@ const SearchBox = ({ page }) => {
       appdd: '합계',
       dep: '',
       totsales: sum_totsales,
+      totfee: sum_totfee,
+      totsaleamt: sum_totsaleamt,
       totreceivable: sum_totreceivable,
     });
 
@@ -540,10 +549,15 @@ const SearchBox = ({ page }) => {
         (total, row) => total + row.totreceivable,
         0,
       );
+      const subtotalfee = rows.reduce((total, row) => total + row.totfee, 0);
+      const subtotalsaleamt = rows.reduce((total, row) => total + row.totsaleamt, 0);
+
       subtotalRows.push({
         appdd: '소계',
         dep: '',
         totsales: subtotalCnt,
+        totfee: subtotalfee,
+        totsaleamt : subtotalsaleamt,
         totreceivable: subtotalAmt,
       });
     }
@@ -759,6 +773,7 @@ const SearchBox = ({ page }) => {
               : params.data.appdd === '합계'
               ? 2
               : 1,
+            width:190,
         },
         { field: 'dep', headerName: '사업부' },
 
@@ -769,11 +784,25 @@ const SearchBox = ({ page }) => {
           valueFormatter: numberCellFormatter,
         },
         {
+          field: 'totfee',
+          headerName: '수수료',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+        {
+          field: 'totsaleamt',
+          headerName: '입금액',
+          cellClass: 'number',
+          valueFormatter: numberCellFormatter,
+        },
+
+        {
           field: 'totreceivable',
           headerName: '미수금액',
           cellClass: 'number',
           valueFormatter: numberCellFormatter,
         },
+        
       ]);
     } else if (page === 'sub06') {
       setColmnDefs([

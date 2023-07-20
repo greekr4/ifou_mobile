@@ -6,13 +6,58 @@
     --ag-odd-row-background-color: rgb(0, 0, 0, 0.03);
     --ag-header-column-resize-handle-color: rgb(126, 46, 132); */
 
-    --ag-font-size:8px;
+    --ag-font-size: 9px;
     --ag-font-family: monospace;
+
 
     --ag-grid-size: 4px;
     text-align: center;
-}
 
-    .ag-header-cell-label{
+
+    /* 그리드 셀 패딩과 마진을 없애는 부분 */
+    .ag-cell {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
+
+    .ag-cell-label-container {
+        padding: 0px;
+        /* 컬럼명의 패딩을 조정하려면 원하는 크기로 수정합니다. */
+        margin: 0px;
+        /* 컬럼명의 마진을 조정하려면 원하는 크기로 수정합니다. */
+        font-size: var(--ag-font-size);
+        font-family: var(--ag-font-family);
+    }
+
+    .ag-row {
+        margin: 0;
+    }
+
+    .ag-row-cell {
+        padding: 0;
+        margin: 0;
+    }
+
+    .ag-header-cell {
+        /* 컬럼명의 사이즈를 조정하려면 원하는 크기로 수정합니다. */
+        min-height: 30px;
+        line-height: 30px;
+    }
+
+    .ag-header-cell-label {
+        /* 컬럼명의 정렬을 가운데로 조정합니다. */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+
+}
+
+.ag-header-cell-label {
+    justify-content: center;
+}
