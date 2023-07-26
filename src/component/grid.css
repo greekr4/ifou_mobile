@@ -11,7 +11,7 @@
 
 
     --ag-grid-size: 4px;
-    text-align: center;
+    /*text-align: center;*/
 
 
     /* 그리드 셀 패딩과 마진을 없애는 부분 */
@@ -21,6 +21,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .number {
+        justify-content: right;
+        padding-right: 0.5rem;
     }
 
     .ag-cell-label-container {
@@ -49,9 +54,9 @@
 
     .ag-header-cell-label {
         /* 컬럼명의 정렬을 가운데로 조정합니다. */
-        display: flex;
+        /* display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: center; */
     }
 
 

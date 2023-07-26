@@ -2,6 +2,7 @@ import { AgCheckbox } from 'ag-grid-community';
 import axios from 'axios';
 import { check } from 'prettier';
 import React, { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
@@ -130,6 +131,8 @@ const CheckboxLabel = styled.label`
 `;
 
 const LoginComponent = ({ onLogout }) => {
+  const [cookies, setCookie, removeCookie] = useCookies();
+
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
@@ -171,6 +174,10 @@ const LoginComponent = ({ onLogout }) => {
       .then(res => {
         console.log(res.data.RTN_MSG);
         if (res.data.RTN_MSG === '0000') {
+          const expires = new Date();
+          expires.setFullYear(expires.getTime() + 30);
+          setCookie('jwt',res.data.TOKEN,expires);
+          
           if (isChecked) {
             localStorage.clear();
             localStorage.setItem('saveid', inputId);

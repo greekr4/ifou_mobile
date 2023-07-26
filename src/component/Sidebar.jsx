@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import { LoggedIn, uAuth } from '../Redux';
 import Swal from 'sweetalert2';
@@ -67,7 +68,7 @@ const Space_wrap = styled.div`
 `;
 const Logo_wrap = styled.div`
   flex-grow: 1;
-  text-align: center;
+  text-align: left;
 `;
 const Exit_wrap = styled.div`
   flex-shrink: 0;
@@ -117,6 +118,8 @@ const Menu_icon_wrap = styled.div`
 const Menu_text_wrap = styled.div``;
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+  const ReduceAuth = useSelector(state => state);
+  const [cookies, setCookie, removeCookie] = useCookies();
   const handleMenuClick = link => {
     setIsOpen(false);
     setTimeout(() => {
@@ -163,8 +166,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
         dispatch({
           type: uAuth,
-          data: 'X',
+          data: '',
         });
+        removeCookie('jwt');
       }
     });
   };
@@ -175,7 +179,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <MenuHeader_wrap>
           <Space_wrap></Space_wrap>
           <Logo_wrap>
-            <Logo_img src="/Resource/Images/Logo/logo_side.png" />
+            {/* <Logo_img src="/Resource/Images/Logo/logo_side.png" /> */}
+            <h2>{ReduceAuth.uAuth[0]}님</h2>
+            <h3>반갑습니다.</h3>
           </Logo_wrap>
           <Exit_wrap>
             <Exit_img

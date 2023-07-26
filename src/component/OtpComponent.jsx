@@ -3,7 +3,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LoggedIn, uAuth } from "../Redux";
+import { useCookies } from 'react-cookie';
 import Swal from "sweetalert2";
+import jwtDecode from "jwt-decode";
+import base64 from 'base-64';
 
 const OtpBox = styled.div`
   width: 100%;
@@ -50,10 +53,18 @@ const OtpButton = styled.button`
 `;
 
 const OtpComponent = ({ onLogin }) => {
-  const dispatch = useDispatch();
 
+  
+  const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies();
   const [inputOtp, setInputOtp] = useState("");
 
+
+  
+  const uauth = base64.decode(jwtDecode(cookies.jwt).sub);
+  const uauths = uauth.split('|');
+
+  
   const handleInputOtp = (e) => {
     setInputOtp(e.target.value);
     console.log(inputOtp);
@@ -73,7 +84,7 @@ const OtpComponent = ({ onLogin }) => {
       });
       dispatch({
         type: uAuth,
-        data: "dddddd",
+        data: uauths,
       });
       navigate("../main");
     } else {

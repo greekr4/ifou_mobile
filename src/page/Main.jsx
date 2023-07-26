@@ -23,7 +23,7 @@ const LOADING_IMG = styled.img``;
 
 const Main = () => {
   const [loading, setLoading] = useState(false);
-
+  
   useEffect(() => {
     const preventGoBack = () => {
       window.history.pushState(null, '', window.location.href);

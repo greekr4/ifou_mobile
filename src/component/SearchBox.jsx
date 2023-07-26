@@ -663,6 +663,7 @@ const SearchBox = ({ page }) => {
               : params.data.appdd === '합계'
               ? 3
               : 1,
+              
         },
         { field: 'dep', headerName: '사업부' },
         { field: 'card', headerName: '카드사' },
@@ -672,6 +673,7 @@ const SearchBox = ({ page }) => {
           cellClass: 'number',
           valueFormatter: numberCellFormatter,
           width: 140,
+          type: 'rightAligned'
         },
         {
           field: 'amt',
