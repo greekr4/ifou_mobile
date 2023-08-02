@@ -180,7 +180,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <Space_wrap></Space_wrap>
           <Logo_wrap>
             {/* <Logo_img src="/Resource/Images/Logo/logo_side.png" /> */}
-            <h2>{ReduceAuth.uAuth[0]}님</h2>
+            <h2>{ReduceAuth.uAuth[10]}님</h2>
             <h3>반갑습니다.</h3>
           </Logo_wrap>
           <Exit_wrap>

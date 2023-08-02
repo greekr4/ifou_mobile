@@ -6,7 +6,7 @@ import { LoggedIn, uAuth } from "../Redux";
 import { useCookies } from 'react-cookie';
 import Swal from "sweetalert2";
 import jwtDecode from "jwt-decode";
-import base64 from 'base-64';
+import base64, { decode } from 'base-64';
 
 const OtpBox = styled.div`
   width: 100%;
@@ -60,9 +60,15 @@ const OtpComponent = ({ onLogin }) => {
   const [inputOtp, setInputOtp] = useState("");
 
 
+  console.log(jwtDecode(cookies.jwt).sub);
+
+
   
-  const uauth = base64.decode(jwtDecode(cookies.jwt).sub);
+  const uauth = jwtDecode(cookies.jwt).sub;
+  //alert(uauth);
   const uauths = uauth.split('|');
+  //const decodedString = decode(jwtDecode(cookies.jwt).sub, { encoding: 'euc-kr' });
+  //alert(decodedString);
 
   
   const handleInputOtp = (e) => {

@@ -7,6 +7,7 @@ import GridComponent from './GridComponent';
 import Selecter from './Search/Selecter';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 const LOADING_DIV = styled.div`
   position: fixed;
@@ -110,6 +111,8 @@ const S_BTN_IMG = styled.i`
 `;
 
 const SearchBox = ({ page }) => {
+  const ReduceAuth = useSelector(state => state);
+
   const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear().toString().substring(2, 6);
@@ -261,7 +264,7 @@ const SearchBox = ({ page }) => {
           tid: tid,
           sexpdd: p_sexpdd,
           eexpdd: p_eexpdd,
-          orgcd: 'OR0016',
+          orgcd: ReduceAuth.uAuth[1],
         },
       });
 
