@@ -98,6 +98,17 @@ const Menu_li = styled.li`
   font-weight: 550;
 `;
 
+
+const Alert_li = styled.li`
+  list-style: none;
+  font-size: 12px;
+  line-height: 1rem;
+  color: black;
+  font-weight: 550;
+  margin-top: 15px;
+
+`
+
 const Menu_Link = styled(Link)`
   text-decoration: none;
 `;
@@ -116,6 +127,9 @@ const Menu_icon_wrap = styled.div`
 `;
 
 const Menu_text_wrap = styled.div``;
+
+
+const Alert_text_warp = styled.div``;
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const ReduceAuth = useSelector(state => state);
@@ -151,7 +165,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   const onClickLogout = () => {
     Swal.fire({
-      title: 'question',
+      title: '',
       text: '로그아웃 하시겠습니까?',
       icon: 'question',
       showCancelButton: true,
@@ -269,6 +283,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               <Menu_text_wrap>로그아웃</Menu_text_wrap>
             </Li_div>
           </Menu_li>
+          <Alert_li>
+            <Alert_text_warp>
+            거래 및 입금 상세 데이터는<br/> IFOU WEB (nifou.ifou.co.kr)을<br/>이용해주세요.
+            </Alert_text_warp>
+          </Alert_li>
         </Menu_ul>
       </SideBarWrap>
       {isOpen ? <LOADING_DIV /> : null}

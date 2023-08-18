@@ -52,6 +52,13 @@ const OtpButton = styled.button`
   border: none;
 `;
 
+const Alert_text = styled.div`
+display: block;
+padding: 10px;
+text-align: center;
+color: #fff;
+`;
+
 const OtpComponent = ({ onLogin }) => {
 
   
@@ -111,6 +118,9 @@ const OtpComponent = ({ onLogin }) => {
         onKeyDown={handleOnKeyPress}
       />
       <OtpButton onClick={onClickOtp}>인증</OtpButton>
+      <Alert_text>
+      거래 및 입금 상세 데이터는<br/> IFOU WEB (nifou.ifou.co.kr)을<br/>이용해주세요.
+      </Alert_text>
     </OtpBox>
   );
 };

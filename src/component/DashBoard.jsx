@@ -2,6 +2,7 @@ import { type } from '@testing-library/user-event/dist/type';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const DAYBOX = styled.div`
@@ -186,6 +187,7 @@ const MM_DD_SUB = styled.span`
 `;
 
 const DashBoard = ({ title, setLoading }) => {
+  const ReduceAuth = useSelector(state => state);
   const today = new Date();
   const today_appdd =
     today.getFullYear() +
@@ -244,7 +246,7 @@ const DashBoard = ({ title, setLoading }) => {
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
           params: {
-            orgcd: 'OR0016',
+            orgcd: ReduceAuth.uAuth[1],
             appdd: appdd,
           },
         })
@@ -309,7 +311,7 @@ const DashBoard = ({ title, setLoading }) => {
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard2', null, {
           params: {
-            orgcd: 'OR0016',
+            orgcd: ReduceAuth.uAuth[1],
             expdd: expdd,
           },
         })
@@ -344,7 +346,7 @@ const DashBoard = ({ title, setLoading }) => {
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_main_dashboard', null, {
           params: {
-            orgcd: 'OR0016',
+            orgcd: ReduceAuth.uAuth[1],
             appdd: mappdd,
           },
         })

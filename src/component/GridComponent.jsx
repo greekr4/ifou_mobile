@@ -39,8 +39,8 @@ const GirdComponent = ({
       params.data[element.userProvidedColDef.field].toLocaleString()
       : params.data[element.userProvidedColDef.field];
 
-      const res = !isNaN(params.data[element.userProvidedColDef.field]) ? `<tr><th style="width:50%;padding:5px;text-align:right;padding-right:4rem;">${headerName}</th><td style="text-align:right;padding-right:4rem;">${cellvalue}</td></tr>`
-      : `<tr><th style="width:50%;padding:5px;text-align:right;padding-right:4rem;">${headerName}</th><td>${cellvalue}</td></tr>`;
+      const res = !isNaN(params.data[element.userProvidedColDef.field]) ? `<tr><th style="width:50%;padding:5px;text-align:center;">${headerName}</th><td style="text-align:center;">${cellvalue}</td></tr>`
+      : `<tr><th style="width:50%;padding:5px;text-align:center;">${headerName}</th><td>${cellvalue}</td></tr>`;
       swalvalue += res;
     });
 

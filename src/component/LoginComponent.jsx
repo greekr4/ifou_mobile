@@ -126,6 +126,13 @@ const IdSave_label = styled.label`
   }
 `;
 
+const Alert_text = styled.div`
+display: block;
+padding: 10px;
+text-align: center;
+color: #fff;
+`;
+
 const CheckboxLabel = styled.label`
   margin-left: 0.5rem;
 `;
@@ -235,6 +242,9 @@ const LoginComponent = ({ onLogout }) => {
           로그인
         </LoginButton>
       </div>
+      <Alert_text>
+      거래 및 입금 상세 데이터는<br/> IFOU WEB (nifou.ifou.co.kr)을<br/>이용해주세요.
+      </Alert_text>
     </Loginbox>
   );
 };
