@@ -891,7 +891,7 @@ const SearchBox = ({ page }) => {
             setEappdd={setEappdd}
           />,
           <Selecter option="dep" dep={dep} setDep={setDep} />,
-          <Selecter option="card" card={card} setCard={setCard} />,
+          <Selecter option="tid" tid={tid} setTid={setTid} />,
         ])
       : page === 'sub05'
       ? (content = [

@@ -44,7 +44,7 @@ const Footer = () => {
       ) : (
         <MainFooterbox>
           <b>(주)가온솔루션</b> 경기도 고양시 덕양구 충장로 8<br />
-          로터플레이스 1005호
+          로터스플레이스 1005호
           <br />
           <TelB>
             <TelImage src="/Resource/Images/Icon/tel_small.png" />

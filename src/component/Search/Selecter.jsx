@@ -118,7 +118,7 @@ const Selecter = ({
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_tidcd', null, {
           params: {
-            orgcd: 'OR0016',
+            orgcd: ReduceAuth.uAuth[1],
           },
         })
         .then(res => {
@@ -132,7 +132,7 @@ const Selecter = ({
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_acqcd', null, {
           params: {
-            orgcd: 'OR0016',
+            orgcd: ReduceAuth.uAuth[1],
           },
         })
         .then(res => {
@@ -146,7 +146,7 @@ const Selecter = ({
       axios
         .post('http://nxm.ifou.co.kr:28080/common/get_depcd', null, {
           params: {
-            orgcd: 'OR0016',
+            orgcd: ReduceAuth.uAuth[1],
           },
         })
         .then(res => {
