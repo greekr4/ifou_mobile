@@ -54,7 +54,7 @@ const OtpButton = styled.button`
 
 const Alert_text = styled.div`
 display: block;
-padding: 10px;
+padding: 30px;
 text-align: center;
 color: #fff;
 `;

@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 
 const Loginbox = styled.div`
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   overflow-x: hidden;
   background: #80c4ee;
 `;
@@ -128,7 +128,7 @@ const IdSave_label = styled.label`
 
 const Alert_text = styled.div`
 display: block;
-padding: 10px;
+padding: 30px;
 text-align: center;
 color: #fff;
 `;
